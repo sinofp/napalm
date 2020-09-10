@@ -7,9 +7,6 @@ module data_mem (
        );
 
 reg[7:0] mem[255:0];
-initial begin
-    $readmemb("xxx.txt", mem);
-end
 
 assign rd = {mem[addr], mem[addr+1], mem[addr+2], mem[addr+3]};
 

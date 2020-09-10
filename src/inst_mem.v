@@ -4,10 +4,7 @@ module inst_mem (
            output[31:0] inst
        );
 
-reg[7:0] mem[255:0];
-initial begin
-    $readmemb("xxx.txt", mem);
-end
+reg[31:0] mem[255:0];
 
 assign inst = {mem[pc], mem[pc+1], mem[pc+2], mem[pc+3]};
 endmodule
