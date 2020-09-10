@@ -1,0 +1,513 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Thu Sep 10 22:12:23 2020
+# Process ID: 12392
+# Current directory: C:/Users/achin/projs/single-cyle/single-cyle.runs/synth_1
+# Command line: vivado.exe -log top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top.tcl
+# Log file: C:/Users/achin/projs/single-cyle/single-cyle.runs/synth_1/top.vds
+# Journal file: C:/Users/achin/projs/single-cyle/single-cyle.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source top.tcl -notrace
+Command: synth_design -top top -part xc7a35tcsg324-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Device 21-403] Loading part xc7a35tcsg324-1
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 13028 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 834.805 ; gain = 233.066
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'top' [C:/Users/achin/projs/single-cyle/src/top.v:1]
+INFO: [Synth 8-6157] synthesizing module 'pc' [C:/Users/achin/projs/single-cyle/src/pc.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'pc' (1#1) [C:/Users/achin/projs/single-cyle/src/pc.v:1]
+INFO: [Synth 8-6157] synthesizing module 'cu' [C:/Users/achin/projs/single-cyle/src/cu.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'cu' (2#1) [C:/Users/achin/projs/single-cyle/src/cu.v:1]
+INFO: [Synth 8-6157] synthesizing module 'br_unit' [C:/Users/achin/projs/single-cyle/src/br_unit.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'br_unit' (3#1) [C:/Users/achin/projs/single-cyle/src/br_unit.v:1]
+INFO: [Synth 8-6157] synthesizing module 'reg_heap' [C:/Users/achin/projs/single-cyle/src/reg_heap.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'reg_heap' (4#1) [C:/Users/achin/projs/single-cyle/src/reg_heap.v:1]
+INFO: [Synth 8-6157] synthesizing module 'data_mem' [C:/Users/achin/projs/single-cyle/src/data_mem.v:1]
+CRITICAL WARNING: [Synth 8-4445] could not open $readmem data file 'xxx.txt'; please make sure the file is added to project and has read permission, ignoring [C:/Users/achin/projs/single-cyle/src/data_mem.v:11]
+WARNING: [Synth 8-4767] Trying to implement RAM 'mem_reg' in registers. Block RAM or DRAM implementation is not possible; see log for reasons.
+Reason is one or more of the following :
+	1: RAM has multiple writes via different ports in same process. If RAM inferencing intended, write to one port per process. 
+	2: Unable to determine number of words or word size in RAM. 
+	3: No valid read/write found for RAM. 
+RAM "mem_reg" dissolved into registers
+INFO: [Synth 8-6155] done synthesizing module 'data_mem' (5#1) [C:/Users/achin/projs/single-cyle/src/data_mem.v:1]
+INFO: [Synth 8-6157] synthesizing module 'inst_mem' [C:/Users/achin/projs/single-cyle/src/inst_mem.v:1]
+CRITICAL WARNING: [Synth 8-4445] could not open $readmem data file 'xxx.txt'; please make sure the file is added to project and has read permission, ignoring [C:/Users/achin/projs/single-cyle/src/inst_mem.v:9]
+
+Warning: Trying to implement RAM in registers. Block RAM or DRAM implementation is not possible for one or more of the following reasons :
+	1: Unable to determine number of words or word size in RAM. 
+	2: No valid read/write found for RAM. 
+RAM dissolved into registers
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+WARNING: [Synth 8-3848] Net mem in module/entity inst_mem does not have driver. [C:/Users/achin/projs/single-cyle/src/inst_mem.v:7]
+INFO: [Common 17-14] Message 'Synth 8-3848' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-6155] done synthesizing module 'inst_mem' (6#1) [C:/Users/achin/projs/single-cyle/src/inst_mem.v:1]
+INFO: [Synth 8-6157] synthesizing module 'alu' [C:/Users/achin/projs/single-cyle/src/alu.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'alu' (7#1) [C:/Users/achin/projs/single-cyle/src/alu.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'top' (8#1) [C:/Users/achin/projs/single-cyle/src/top.v:1]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port clk
+WARNING: [Synth 8-3331] design cu has unconnected port inst[25]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[24]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[23]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[22]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[21]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[20]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[19]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[18]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[17]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[16]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[15]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[14]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[13]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[12]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[11]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[10]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[9]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[8]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[7]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[6]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[5]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[4]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[3]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[2]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[1]
+WARNING: [Synth 8-3331] design cu has unconnected port inst[0]
+WARNING: [Synth 8-3331] design top has unconnected port rst
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 942.172 ; gain = 340.434
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 942.172 ; gain = 340.434
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 942.172 ; gain = 340.434
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.136 . Memory (MB): peak = 942.172 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [C:/Users/achin/projs/single-cyle/single-cyle.srcs/constrs_1/new/cpu.xdc]
+Finished Parsing XDC File [C:/Users/achin/projs/single-cyle/single-cyle.srcs/constrs_1/new/cpu.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/achin/projs/single-cyle/single-cyle.srcs/constrs_1/new/cpu.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/top_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1048.594 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.073 . Memory (MB): peak = 1055.688 ; gain = 7.094
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a35tcsg324-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
++---Registers : 
+	               32 Bit    Registers := 1     
+	                8 Bit    Registers := 256   
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 7     
+	   4 Input      8 Bit        Muxes := 144   
+	   2 Input      8 Bit        Muxes := 252   
+	   2 Input      5 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 16    
+	   5 Input      1 Bit        Muxes := 188   
+	   2 Input      1 Bit        Muxes := 250   
+	   4 Input      1 Bit        Muxes := 64    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module top 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 3     
+	   2 Input      5 Bit        Muxes := 1     
+Module pc 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+Module br_unit 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module reg_heap 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 2     
+Module data_mem 
+Detailed RTL Component Info : 
++---Registers : 
+	                8 Bit    Registers := 256   
++---Muxes : 
+	   4 Input      8 Bit        Muxes := 144   
+	   2 Input      8 Bit        Muxes := 252   
+	   4 Input      2 Bit        Muxes := 16    
+	   5 Input      1 Bit        Muxes := 188   
+	   2 Input      1 Bit        Muxes := 250   
+	   4 Input      1 Bit        Muxes := 64    
+Module alu 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 90 (col length:60)
+BRAMs: 100 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+WARNING: [Synth 8-3331] design inst_mem has unconnected port clk
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[31]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[30]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[29]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[28]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[27]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[26]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[25]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[24]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[23]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[22]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[21]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[20]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[19]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[18]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[17]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[16]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[15]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[14]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[13]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[12]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[11]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[10]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[9]
+WARNING: [Synth 8-3331] design inst_mem has unconnected port pc[8]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[31]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[30]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[29]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[28]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[27]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[26]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[25]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[24]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[23]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[22]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[21]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[20]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[19]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[18]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[17]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[16]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[15]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[14]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[13]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[12]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[11]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[10]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[9]
+WARNING: [Synth 8-3331] design data_mem has unconnected port addr[8]
+WARNING: [Synth 8-3331] design top has unconnected port rst
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:34 ; elapsed = 00:00:36 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:43 ; elapsed = 00:00:46 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:43 ; elapsed = 00:00:46 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:43 ; elapsed = 00:00:46 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++-+-----+------+
+| |Cell |Count |
++-+-----+------+
++-+-----+------+
+
+Report Instance Areas: 
++------+---------+-------+------+
+|      |Instance |Module |Cells |
++------+---------+-------+------+
+|1     |top      |       |     0|
++------+---------+-------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 1055.688 ; gain = 453.949
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 50 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:36 ; elapsed = 00:00:48 . Memory (MB): peak = 1055.688 ; gain = 340.434
+Synthesis Optimization Complete : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 1055.688 ; gain = 453.949
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1055.688 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1055.688 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Common 17-83] Releasing license: Synthesis
+27 Infos, 180 Warnings, 2 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:56 ; elapsed = 00:00:59 . Memory (MB): peak = 1055.688 ; gain = 750.484
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1055.688 ; gain = 0.000
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+INFO: [Common 17-1381] The checkpoint 'C:/Users/achin/projs/single-cyle/single-cyle.runs/synth_1/top.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file top_utilization_synth.rpt -pb top_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Thu Sep 10 22:13:27 2020...
