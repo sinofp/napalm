@@ -1,8 +1,6 @@
-`timescale 1ns / 1ps
-
 module top (
-         input clk,
-         input rst
+           input clk,
+           input rst
        );
 
 wire[31:0] pc_now;
@@ -38,7 +36,8 @@ br_unit BR_UNIT(.pc(pc_now),
                 .cu_jump,
                 .pc_next);
 
-reg_heap REG_HEAP(.ra1(rs),
+reg_heap REG_HEAP(.clk,
+                  .ra1(rs),
                   .ra2(rt),
                   .wa(cu_write2rt? rt: rd),
                   .we(cu_reg_we),
@@ -46,8 +45,13 @@ reg_heap REG_HEAP(.ra1(rs),
                   .rd1,
                   .rd2);
 
-data_mem DATA_MEM(.addr(res),
+data_mem DATA_MEM(.clk,
+                  .addr(res),
                   .wd(rd2),
                   .we(cu_mem_we),
                   .rd(load_data));
+
+inst_mem INST_MEM(.clk,
+                  .pc(pc_now),
+                  .inst);
 endmodule
