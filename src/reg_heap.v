@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module reg_heap (
            input clk,
            input[4:0] ra1,

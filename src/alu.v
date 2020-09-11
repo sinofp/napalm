@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module alu (
            input alu_op,
            input[31:0] num1,

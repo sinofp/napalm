@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module pc (
            input clk,
            input rst_n,
@@ -6,7 +7,7 @@ module pc (
        );
 
 always @(posedge clk) begin
-    if (rst_n) begin
+    if (~rst_n) begin
         pc_now <= 32'b0;
     end
     else begin

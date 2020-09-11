@@ -1,5 +1,0 @@
-set_property SRC_FILE_INFO {cfile:C:/Users/achin/projs/single-cyle/single-cyle.srcs/constrs_1/new/cpu.xdc rfile:../../../single-cyle.srcs/constrs_1/new/cpu.xdc id:1} [current_design]
-set_property src_info {type:XDC file:1 line:1 export:INPUT save:INPUT read:READ} [current_design]
-set_property PACKAGE_PIN T5 [get_ports clk]
-set_property src_info {type:XDC file:1 line:2 export:INPUT save:INPUT read:READ} [current_design]
-set_property PACKAGE_PIN P15 [get_ports rst]

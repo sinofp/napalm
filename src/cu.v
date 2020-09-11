@@ -1,6 +1,8 @@
+`timescale 1ns / 1ps
 module cu (
            input[31:0] inst,
            output cu_jump,
+           output cu_beq,
            output cu_write2rt,
            output cu_imm2alu,
            output cu_write_imm,
@@ -26,6 +28,7 @@ wire itype = ~ (rtype | jtype);
 assign cu_jump = jtype;
 assign cu_write2rt = itype;
 assign cu_imm2alu = itype;
+assign cu_beq = opcode == 6'b000100;
 assign cu_write_imm = opcode == 6'b001111; // lui
 assign cu_read_data = opcode == 6'b100011; // lw
 assign cu_reg_we = ~ (jtype | cu_mem_we); // R-type & I-type 除了 sw

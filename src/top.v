@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module top (
            input clk,
            input rst_n
@@ -14,6 +15,7 @@ wire[25:0] instr_index = inst[25:0];
 wire[15:0] imm = inst[15:0];
 
 wire cu_jump;
+wire cu_beq;
 wire cu_write2rt;
 wire cu_imm2alu;
 wire cu_write_imm;
@@ -31,6 +33,7 @@ pc PC(.clk(clk), .rst_n(rst_n), .pc_next(pc_next), .pc_now(pc_now));
 
 cu CU(.inst(inst),
       .cu_jump(cu_jump),
+      .cu_beq(cu_beq),
       .cu_write2rt(cu_write2rt),
       .cu_imm2alu(cu_imm2alu),
       .cu_write_imm(cu_write_imm),
@@ -45,6 +48,7 @@ br_unit BR_UNIT(.pc(pc_now),
                 .rd1(rd1),
                 .rd2(rd2),
                 .cu_jump(cu_jump),
+                .cu_beq(cu_beq),
                 .pc_next(pc_next));
 
 reg_heap REG_HEAP(.clk(clk),
