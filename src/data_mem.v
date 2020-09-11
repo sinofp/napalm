@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+`include "define.v"
 module data_mem (
            input clk,
            input[31:0] addr,
@@ -7,9 +8,9 @@ module data_mem (
            output[31:0] rd
        );
 
-reg[7:0] mem[255:0];
+reg[7:0] mem[`DATA_NUM:0];
 
-assign rd = {mem[addr], mem[addr+1], mem[addr+2], mem[addr+3]};
+assign rd = {mem[addr+3], mem[addr+2], mem[addr+1], mem[addr]};
 
 always @(posedge clk) begin
     if (we) begin
