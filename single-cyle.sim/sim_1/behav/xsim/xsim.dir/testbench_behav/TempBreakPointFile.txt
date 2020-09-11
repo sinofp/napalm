@@ -1,2 +1,4 @@
 Breakpoint File Version 1.0
-11 true C:/Users/achin/projs/single-cyle/src/pc.v
+14 true C:/Users/achin/projs/single-cyle/src/pc.v
+12 true C:/Users/achin/projs/single-cyle/src/br_unit.v
+10 true C:/Users/achin/projs/single-cyle/src/inst_mem.v

@@ -5,14 +5,13 @@ reg rst_n;
 
 top TOP(.clk(clk), .rst_n(rst_n));
 
-localparam CLK_PERIOD = 10;
+localparam CLK_PERIOD = 4'ha;
 always #(CLK_PERIOD/2) clk=~clk;
 
 initial begin
     $readmemh("C:/Users/achin/projs/single-cyle/sim/reg.txt", TOP.REG_HEAP.gpr);
     $readmemb("C:/Users/achin/projs/single-cyle/sim/data.txt", TOP.DATA_MEM.mem);
     $readmemh("C:/Users/achin/projs/single-cyle/sim/inst.txt", TOP.INST_MEM.mem);
-    $display("first inst is 0x%0h", TOP.INST_MEM.mem[0]);
 end
 
 initial begin

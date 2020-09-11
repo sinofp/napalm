@@ -7,5 +7,5 @@ module inst_mem (
 
 reg[31:0] mem[255:0];
 
-assign inst = mem[pc];
+assign inst = mem[pc[31:2]]; // >> 4，因为我的基本单位是4字节，MIPS是1字节
 endmodule
