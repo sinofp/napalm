@@ -12,7 +12,7 @@ reg[7:0] mem[`DATA_NUM:0];
 
 assign rd = {mem[addr+3], mem[addr+2], mem[addr+1], mem[addr]};
 
-always @(posedge clk) begin
+always @(negedge clk) begin
     if (we) begin
         mem[addr] <= wd[7:0];
         mem[addr+1] <= wd[15:8];
