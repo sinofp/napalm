@@ -42,7 +42,9 @@ cu CU(.inst(inst),
       .cu_mem_we(cu_mem_we),
       .cu_alu_op(cu_alu_op));
 
-br_unit BR_UNIT(.pc(pc_now),
+br_unit BR_UNIT(.clk(clk),
+                .rst_n(rst_n),
+                .pc(pc_now),
                 .instr_index(instr_index),
                 .offset(imm),
                 .rd1(rd1),
