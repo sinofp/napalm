@@ -16,8 +16,7 @@ wire[15:0] imm = inst[15:0];
 
 wire cu_jump;
 wire cu_beq;
-wire cu_write2rt;
-wire cu_imm2alu;
+wire cu_itype;
 wire cu_write_imm;
 wire cu_read_data;
 wire cu_reg_we;
@@ -34,8 +33,7 @@ pc PC(.clk(clk), .rst_n(rst_n), .pc_next(pc_next), .pc_now(pc_now));
 cu CU(.inst(inst),
       .cu_jump(cu_jump),
       .cu_beq(cu_beq),
-      .cu_write2rt(cu_write2rt),
-      .cu_imm2alu(cu_imm2alu),
+      .cu_itype(cu_itype),
       .cu_write_imm(cu_write_imm),
       .cu_read_data(cu_read_data),
       .cu_reg_we(cu_reg_we),
@@ -56,7 +54,7 @@ br_unit BR_UNIT(.clk(clk),
 reg_heap REG_HEAP(.clk(clk),
                   .ra1(rs),
                   .ra2(rt),
-                  .wa(cu_write2rt? rt: rd),
+                  .wa(cu_itype? rt: rd),
                   .we(cu_reg_we),
                   .wd(cu_write_imm? {imm, 16'b0}: cu_read_data? load_data: res),
                   .rd1(rd1),
@@ -74,6 +72,6 @@ inst_mem INST_MEM(.clk(clk),
 
 alu ALU(.alu_op(cu_alu_op),
         .num1(rd1),
-        .num2(cu_imm2alu? { {16{imm[15]}}, imm }: rd2),
+        .num2(cu_itype? { {16{imm[15]}}, imm }: rd2),
         .res(res));
 endmodule
