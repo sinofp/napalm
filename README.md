@@ -1,46 +1,47 @@
-| inst   |     |     |
-| ------ | --- | --- |
-| addi   |     |     |
-| addiu  |     |     |
-| addu   |     |     |
-| and    |     |     |
-| andi   |     |     |
-| beq    |     |     |
-| bgez   |     |     |
-| bgezal |     |     |
-| bgtz   |     |     |
-| blez   |     |     |
-| bltz   |     |     |
-| bltzal |     |     |
-| bne    |     |     |
-| j      |     |     |
-| jal    |     |     |
-| jr     |     |     |
-| lb     |     |     |
-| lui    |     |     |
-| lw     |     |     |
-| nop    |     |     |
-| or     |     |     |
-| ori    |     |     |
-| sb     |     |     |
-| sll    |     |     |
-| sllv   |     |     |
-| slt    |     |     |
-| slti   |     |     |
-| sltiu  |     |     |
-| sltu   |     |     |
-| sra    |     |     |
-| srl    |     |     |
-| srlv   |     |     |
-| sub    |     |     |
-| subu   |     |     |
-| sw     |     |     |
-| xor    |     |     |
-| nor    |     |     |
-| xori   |     |     |
-| div    |     |     |
-| divu   |     |     |
-| mfhi   |     |     |
-| mflo   |     |     |
-| mult   |     |     |
-| multu  |     |     |
+| inst   	|     |     |
+| ------ 	| --- | --- |
+| 1 add    	|     |     |
+| 2 addi   	|     |     |
+| 3 addiu  	|     |     |
+| 4 addu   	|     |     |
+| 5 and    	|     |     |
+| 6 andi   	|     |     |
+| 7 beq    	|     |     |
+| 8 bgez   	|     |     |
+| 9 bgezal 	|     |     |
+| 10 bgtz   |     |     |
+| 11 blez   |     |     |
+| 12 bltz   |     |     |
+| 13 bltzal |     |     |
+| 14 bne    |     |     |
+| 15 j      |     |     |
+| 16 jal    |     |     |
+| 17 jr     |     |     |
+| 18 lb     |     |     |
+| 19 lui    |     |     |
+| 20 lw     |     |     |
+| 21 nop    |     |     |
+| 22 or     |     |     |
+| 23 ori    |     |     |
+| 24 sb     |     |     |
+| 25 sll    |     |     |
+| 26 sllv   |     |     |
+| 27 slt    |     |     |
+| 28 slti   |     |     |
+| 29 sltiu  |     |     |
+| 30 sltu   |     |     |
+| 31 sra    |     |     |
+| 32 srl    |     |     |
+| 33 srlv   |     |     |
+| 34 sub    |     |     |
+| 35 subu   |     |     |
+| 36 sw     |     |     |
+| 37 xor    |     |     |
+| 38 nor    |     |     |
+| 39 xori   |     |     |
+| 40 div    |     |     |
+| 41 divu   |     |     |
+| 42 mfhi   |     |     |
+| 43 mflo   |     |     |
+| 44 mult   |     |     |
+| 45 multu  |     |     |
