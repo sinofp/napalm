@@ -2,6 +2,7 @@
 
 /*  Instructions' OP & Function Code  */
 `define NOOP			32'b0
+
 // I Type
 `define ADDI_OP			6'b001000
 `define ADDIU_OP  		6'b001001 
