@@ -25,7 +25,7 @@
 // R Type 
 `define R_OP			6'b000000
 `define ADD_FUNC 		6'b100000
-`define ADDU_FUNC   	6'b100001 
+`define ADDU_FUNC 		6'b100001 
 `define AND_FUNC		6'b100100 
 `define JR_FUNC	 		6'b001000
 `define OR_FUNC			6'b100101
