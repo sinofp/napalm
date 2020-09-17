@@ -1,5 +1,6 @@
 `timescale 1ns / 1ps
 
+//--------------------------------------
 /*  Instructions' OP & Function Code  */
 `define NOOP			32'b0
 
@@ -56,3 +57,58 @@
 `define BGEZAL_RT		5'b10001
 `define BLTZ_RT			5'b00000
 `define BLTZAL_RT		5'b10000
+
+
+//----------------
+/* Control Unit */
+
+// Whether write into register
+`define WRITE_REG_NO 			1'b0 			// Cannot write into reg
+`define WRITE_REG_YES 			1'b1 			// OK to write into reg
+
+// Whether write into memory
+`define WRITE_MEM_NO			1'b0 			// Cannot write into mem
+`define WRITE_MEM_YES			1'b1 			// OK to write into mem
+
+// Source operand of ALU input
+`define ALU_SRC_DEFAULT			1'b0 			// from register
+`define ALU_SRC_EXTEND			1'b1 			// from imm after extension
+
+// Extend Situations
+`define EXTEND_DEFAULT			2'b00 			// Default
+`define EXTEND_LEFT16			2'b01 			// <<16
+`define EXTEND_S_IMM32			2'b10 			// Signed extend
+`define EXTEND_U_OFF32			2'b11 			// Unsigned extend
+
+// Jump Situations
+`define JUMP_OP_DEFAULT			3'b000 			// Default
+`define JUMP_OP_P4				3'b001 			// PC + 4
+`define JUMP_OP_DST				3'b010 			// PC[31:28] + imm26 + 2'b00
+`define JUMP_OP_OFF				3'b011 			// PC + 4 + OFFSET
+`define JUMP_OP_RS				3'b100 			// RS
+
+// Source of writing into register
+`define SRC_WRITE_REG_DEFAULT 	3'b000 			// Default
+`define SRC_WRITE_REG_IMM		3'b001 			// from imm after extension
+`define SRC_WRITE_REG_ALU 		3'b010 			// from ALU
+`define SRC_WRITE_REG_MEM		3'b011 			// from Data mem
+`define SRC_WRITE_REG_JDST 		3'b100 			// from Jump dest
+
+// ALU Operator
+`define ALU_OP_DEFAULT 			4'b0000 		// Default
+`define ALU_OP_PLUS				4'b0001 		// +
+`define ALU_OP_AND				4'b0010 		// &
+`define ALU_OP_DIV				4'b0011 		// /
+`define ALU_OP_MULT				4'b0100 		// *
+`define ALU_OP_OR				4'b0101 		// |
+`define ALU_OP_SLL				4'b0110 		// <<
+`define ALU_OP_SLT 				4'b0111 		// set on less than
+`define ALU_OP_SRA 				4'b1000 		// >>
+`define ALU_OP_SRL 				4'b1001 		// >>
+`define ALU_OP_SRLV 			4'b1010 		// shift right logical variable
+`define ALU_OP_MINUS 			4'b1011 		// -
+`define ALU_OP_XOR 				4'b1100 		// xor
+`define ALU_OP_NOR 				4'b1101 		// nor
+
+// todo
+
