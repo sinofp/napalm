@@ -1,7 +1,6 @@
 `timescale 1ns / 1ps
 `include "def.v"
 
-
 module cu(
            	input[31:0] inst,
            	input zeroRes,				// for beq
