@@ -7,6 +7,6 @@ module inst_mem (
     output [31:0] inst
 );
 
-  reg [31:0] mem[255:0];
+  reg [31:0] mem[64:0];
   assign inst = mem[pc[31:2]];
 endmodule
