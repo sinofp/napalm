@@ -15,7 +15,7 @@
 `define BNE_OP			6'b000101
 `define LB_OP			6'b100000
 `define LUI_OP 			6'b001111
-`define        			6'b100011
+`define LW_OP 			6'b100011
 `define ORI_OP			6'b001101
 `define SB_OP			6'b101000
 `define SLTI_OP			6'b001010
@@ -98,7 +98,7 @@
 `define ALU_OP_DEFAULT 			4'b0000 		// Default
 `define ALU_OP_PLUS				4'b0001 		// +
 `define ALU_OP_AND				4'b0010 		// &
-`define ALU_OP_DIV				4'b0011 		// /
+`define ALU_OP_DIV				4'b0011 		// / and %
 `define ALU_OP_MULT				4'b0100 		// *
 `define ALU_OP_OR				4'b0101 		// |
 `define ALU_OP_SLL				4'b0110 		// <<
@@ -109,6 +109,6 @@
 `define ALU_OP_MINUS			4'b1011 		// -
 `define ALU_OP_XOR 				4'b1100 		// xor
 `define ALU_OP_NOR 				4'b1101 		// nor
-
+`define ALU_OP_SLLV				4'b1110 		// shift left logical variable
 // todo
 
