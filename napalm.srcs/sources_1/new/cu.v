@@ -13,12 +13,12 @@ module cu(
 			output regWriteEn,			// For Register File
 			output memWriteEn,			// For Data Memory
 			output[3:0] aluOp,			// For ALU
-			output writeReg,			// FOR MUX before register heap
+			output[1:0] writeRegDst,	// FOR MUX before register heap
 			output srcAlu,				// FOR MUX before ALU
 			output[2:0] srcReg			// FOR MUX after Data Memory
 
 			output saveRetAddrEn		// For saving PC + 8 into $31
-
+			// todo
        );
 
 wire [5:0] opcode = inst[31:26];
@@ -161,10 +161,31 @@ assign aluOp = (add_inst|| addi_inst|| addiu_inst|| addu_inst|| lb_inst|| lw_ins
 			   (nor_inst) ? `ALU_OP_NOR :
 			   (sllv_inst) ? `ALU_OP_SLLV :
 			   `ALU_OP_DEFAULT ;
-//
-assign writeReg = ;
 
-assign srcAlu = ;
+// Which reg to write into
+assign writeRegDst = // RD
+					 (add_inst || addu_inst || and_inst|| mfhi_inst|| mflo_inst|| or_inst|| 
+					  sll_inst || sllv_inst || slt_inst|| sltu_inst|| sra_inst|| srl_inst|| 
+					  srlv_inst|| sub_inst  || subu_inst|| xor_inst) ? `WRITE_REG_DST_RD :
+					 // RT
+					 (addi_inst|| addiu_inst|| andi_inst|| lb_inst|| lui_inst|| lw_inst|| 
+					  ori_inst || xori_inst) ? `WRITE_REG_DST_RT :
+					 // $31
+					 (bgezal_inst|| bltzal_inst|| jal_inst) ? `WRITE_REG_DST_31 :
+					 `WRITE_REG_DST_DEFAULT;
 
-assign srcReg = ;
+assign srcAlu = (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| 
+				 lw_inst  || sb_inst   ||andi_inst || ori_inst  || xori_inst) ? `ALU_SRC_EXTEND :
+				 `ALU_SRC_DEFAULT;
+
+assign srcReg = (lui_inst) ? `SRC_WRITE_REG_IMM :	
+				(addi_inst|| addiu_inst|| andi_inst|| sltiu_inst|| ori_inst|| xori_inst||
+				 add_inst || addu_inst || sub_inst || subu_inst || slt_inst|| sltu_inst|| 
+				 and_inst || or_inst   || nor_inst || xor_inst  || sll_inst|| srl_inst || 
+				 sra_inst || sllv_inst || srlv_inst|| srav_inst) ? `SRC_WRITE_REG_ALU:
+				 (lw_inst) ? `SRC_WRITE_REG_MEM :
+				 (jalr_inst|| jal_inst) ? `SRC_WRITE_REG_JDST :
+				 `SRC_WRITE_REG_DEFAULT;
+
+// todo
 endmodule

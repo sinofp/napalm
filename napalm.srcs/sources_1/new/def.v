@@ -74,6 +74,12 @@
 `define ALU_SRC_DEFAULT			1'b0 			// from register
 `define ALU_SRC_EXTEND			1'b1 			// from imm after extension
 
+// Which dst reg to write into
+`define WRITE_REG_DST_DEFAULT	2'b00 			// Default
+`define WRITE_REG_DST_RT		2'b01 			// into rt
+`define WRITE_REG_DST_RD		2'b10 			// into rd
+`define WRITE_REG_DST_31		2'b11 			// into $31
+
 // Extend Situations
 `define EXTEND_DEFAULT			2'b00 			// Default
 `define EXTEND_LEFT16			2'b01 			// <<16

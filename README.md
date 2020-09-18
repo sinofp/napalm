@@ -11,8 +11,8 @@
 | 9 bgezal 	|   IBR|     |
 | 10 bgtz   |   I  |     |
 | 11 blez   |   I  |     |
-| 12 bltz   |   IBR|   1  |
-| 13 bltzal |   IBR|   1  |
+| 12 bltz   |   IBR|     |
+| 13 bltzal |   IBR|     |
 | 14 bne    |   I  |     |
 | 15 j      |   J  |     |
 | 16 jal    |   J  |     |
