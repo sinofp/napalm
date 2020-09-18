@@ -23,10 +23,10 @@ jobs:
           cp verible*/bin/* .
           rm -r verible-v0.0-601-gfe94fa5*
           echo Now you can use Verible.
-  
+
       - name: Format Verilog by Verible
-        run: find . -type f \( -name '*.v' -o -name '*.vh' \) -exec ./verible-verilog-format --inplace {} +
-        
+        run: find . -type f -name '*.v' -exec ./verible-verilog-format --inplace {} +
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_user_name: GitHub Actions Verible Bot
