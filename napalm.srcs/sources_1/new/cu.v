@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`include "def.v"
+`include "def.vh"
 
 module cu(
            	input[31:0] inst,
