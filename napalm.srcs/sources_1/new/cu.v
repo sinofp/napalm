@@ -14,7 +14,7 @@ module cu(
 			output[3:0] aluOp,			// For ALU
 			output[1:0] writeRegDst,	// FOR MUX before register heap
 			output srcAlu,				// FOR MUX before ALU
-			output[2:0] srcReg			// FOR MUX after Data Memory
+			output[2:0] srcReg,			// FOR MUX after Data Memory
 
 			output saveRetAddrEn		// For saving PC + 8 into $31
 			// todo
