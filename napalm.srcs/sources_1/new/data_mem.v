@@ -2,10 +2,10 @@
 
 module data_mem (
     input         clk,
-    input  [31:0] addr,
-    input  [31:0] wd,
-    input         we,
-    output [31:0] rd
+    input  [31:0] addr, // 写入/读取的地址
+    input  [31:0] wd, // write_data
+    input         we, // write_enable
+    output [31:0] rd // read_data
 );
 
   reg [7:0] mem[255:0];
