@@ -48,8 +48,8 @@ module execute (/*AUTOARG*/
       end
    end   
 
-   alu ALU (.num1(rd1), .num2((aluOp == `ALU_SRC_EXTEND)? imm_ext: rd2), .sa(sa), res(res), .overflow(overflow));
+   alu ALU (.num1(rd1), .num2((srcAlu == `ALU_SRC_EXTEND)? imm_ext: rd2), .sa(sa), res(res), .overflow(overflow));
 
-   br_unit BR_UNIT (.clk(clk), .rd1(rd1), .rd2(rd2), .pcp4(pcp4f), .imm_ext(imm_ext), .jump(jump), .pc_jump(pc_jump));
+   br_unit BR_UNIT (.aluOp(aluOp), .clk(clk), .rd1(rd1), .rd2(rd2), .pcp4(pcp4f), .imm_ext(imm_ext), .jump(jump), .pc_jump(pc_jump));
    
 endmodule // execute
