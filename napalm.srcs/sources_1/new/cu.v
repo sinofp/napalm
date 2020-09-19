@@ -3,9 +3,9 @@
 
 module cu (
     input [31:0] inst,
-    input zeroRes,  // for beq
-    input greatThanZero,  // for BLEZ (!greatThanZero <= 0)
-    input lessThanZero,  // for BGEZ (!lessThanZero >= 0)
+    // input zeroRes,  // for beq
+    // input greatThanZero,  // for BLEZ (!greatThanZero <= 0)
+    // input lessThanZero,  // for BGEZ (!lessThanZero >= 0)
 
     output [2:0] jumpOp,  // For NPC
     output [1:0] extendOp,  // For Signal Extend
@@ -17,7 +17,8 @@ module cu (
     output [2:0] srcReg,  // FOR MUX after Data Memory
 
     output [4:0] sa,	  // shift amount	
-    output saveRetAddrEn  // For saving PC + 8 into $31
+    output saveRetAddrEn, // For saving PC + 8 into $31
+    output loadStall	  // for lb & lw
     // todo
 );
 
@@ -36,6 +37,8 @@ module cu (
   wire bgez_inst, bgezal_inst, bltz_inst, bltzal_inst;
   // NOP
   wire nop_inst;
+
+
 
   // for shift imm
   assign sa = inst[10:6];
@@ -66,7 +69,7 @@ module cu (
   assign mfhi_inst = (rTemp && rFunc == `MFHI_FUNC) ? 1 : 0;
   assign mflo_inst = (rTemp && rFunc == `MFLO_FUNC) ? 1 : 0;
   assign mult_inst = (rTemp && rFunc == `MULT_FUNC) ? 1 : 0;
-  assign multu_inst = (rTemp && rFunc == `MULTI_FUNC) ? 1 : 0;
+  assign multu_inst = (rTemp && rFunc == `MULTU_FUNC) ? 1 : 0;
 
   // for I
   assign addi_inst = (opcode == `ADDI_OP) ? 1 : 0;
@@ -96,9 +99,9 @@ module cu (
   assign j_inst = (opcode == `J_OP) ? 1 : 0;
   assign jal_inst = (opcode == `JAL_OP) ? 1 : 0;
 
-  // for link
-  assign saveRetAddrEn = (  (bgezal_inst && !lessThanZero)||
-						  (bltzal_inst &&  lessThanZero)    ) ? 1'b1 : 1'b0 ;	// bgezal
+  // // for link
+  // assign saveRetAddrEn = (  (bgezal_inst && !lessThanZero)||
+		// 				  (bltzal_inst &&  lessThanZero)    ) ? 1'b1 : 1'b0 ;	// bgezal
 
   /* Control Signals */
 
