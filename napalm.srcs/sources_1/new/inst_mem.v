@@ -8,5 +8,7 @@ module inst_mem (
 );
 
   reg [31:0] mem[64:0];
+  /* verilator lint_off WIDTH */
   assign inst = mem[pc[31:2]];
+  /* verilator lint_on WIDTH */
 endmodule

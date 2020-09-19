@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 
-module reg_heap (
+module reg_file (
     input         clk,
     input  [ 4:0] ra1,
     input  [ 4:0] ra2,
@@ -17,7 +17,9 @@ module reg_heap (
 
   always @(posedge clk) begin
     if (we & wa != 5'b0) begin
+      /* verilator lint_off WIDTH */
       gpr[wa] <= wd;
+      /* verilator lint_on WIDTH */
     end
   end
 
