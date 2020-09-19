@@ -16,6 +16,7 @@ module cu (
     output srcAlu,  // FOR MUX before ALU
     output [2:0] srcReg,  // FOR MUX after Data Memory
 
+    output [4:0] sa,	  // shift amount	
     output saveRetAddrEn  // For saving PC + 8 into $31
     // todo
 );
@@ -23,7 +24,7 @@ module cu (
   wire [5:0] opcode = inst[31:26];
   wire [5:0] rFunc = inst[5:0];
   wire [4:0] rt = inst[20:16];
-
+ 
   wire rTemp;
   // R
   wire add_inst, addu_inst, and_inst, jr_inst, or_inst, sll_inst, sllv_inst, slt_inst, sltu_inst, sra_inst, srl_inst, srlv_inst, sub_inst, subu_inst, xor_inst, nor_inst, div_inst, divu_inst, mfhi_inst, mflo_inst, mult_inst, multu_inst;
@@ -35,6 +36,9 @@ module cu (
   wire bgez_inst, bgezal_inst, bltz_inst, bltzal_inst;
   // NOP
   wire nop_inst;
+
+  // for shift imm
+  assign sa = inst[10:6];
 
   // for noop
   assign nop_inst = (inst == 32'b0) ? 1 : 0;
