@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Verible:
+    # The only runner that matches Verible binary target
+    runs-on: ubuntu-16.04
+
+    steps:
+      - uses: actions/checkout@v2
+        with: # needed by git-auto-commit
+          ref: ${{ github.head_ref }}
+
+      - name: Install Verible
+        run: |
+          wget --quiet https://github.com/google/verible/releases/download/v0.0-601-gfe94fa5/verible-v0.0-601-gfe94fa5-Ubuntu-16.04-xenial-x86_64.tar.gz
+          tar -xf *.tar.gz
+          cp verible*/bin/* .
+          rm -r verible-v0.0-601-gfe94fa5*
+          echo Now you can use Verible.
+
+      - name: Check Verilog syntax
+        run: find . -type f -name '*.v' -exec ./verible-verilog-syntax {} +
+
+      - name: Format Verilog
+        run: find . -type f -name '*.v' -exec ./verible-verilog-format --inplace {} +
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_user_name: GitHub Actions Verible Bot
+          commit_message: Format Verilog code
