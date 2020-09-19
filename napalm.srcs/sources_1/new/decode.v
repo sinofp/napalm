@@ -8,6 +8,9 @@ module decode (
     output [31:0] rd1,  // 从寄存器堆输出的第一个data
     output [31:0] rd2,  // 从寄存器堆输出的第二个data
     output [31:0] imm_ext, // 扩展后的imm，在execute里选择到底用imm还是rd2放到alu里
+    input _wb_we,
+    input [31:0] _wb_wd,
+    input [4:0] _wb_wa,
     output [3:0] aluOp,  // alu做什么运算
     output srcAlu,  // 选择哪个是alu的操作数
     output reg [31:0] pcp4d,  // 输出的pc + 4，这个和_pcp4d有一个周期的延迟
@@ -22,21 +25,25 @@ module decode (
 );
 
   // TODO 寄存器堆需要的，暂时没写
-  wire [ 4:0] ra1;
-  wire [ 4:0] ra2;
-  wire [ 4:0] wa;
-  wire        we;
-  wire [31:0] wd;
+  wire[4:0] rs = inst[25:21];
+  wire[4:0] rt = inst[20:16];
 
   reg  [31:0] inst;
+  reg wb_we;
+  reg [31:0] wb_wd;
+  reg [4:0] wb_wa;
 
   always @(posedge clk) begin
     if (rst) begin
       inst <= 32'b0;
       pcp4d <= 32'b0;
+      wb_we <= 1'b0;
     end else begin
       inst <= _inst;
       pcp4d <= _pcp4d;
+      wb_we <= _wb_we;
+      wb_wd <= _wb_we;
+      wb_wa <= _wb_wa;
     end
   end
 
@@ -55,11 +62,11 @@ module decode (
 
   reg_file REG_FILE (
       .clk(clk),
-      .ra1(ra1),
-      .ra2(ra2),
-      .wa (wa),
-      .we (we),
-      .wd (wd),
+      .ra1(rs),
+      .ra2(rt),
+      .wa (wb_wa),
+      .we (wb_we),
+      .wd (wb_wd),
       .rd1(rd1),
       .rd2(rd2)
   );
