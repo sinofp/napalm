@@ -24,6 +24,9 @@ jobs:
           rm -r verible-v0.0-601-gfe94fa5*
           echo Now you can use Verible.
 
+      - name: Check Verilog syntax
+        run: find . -type f -name '*.v' -exec ./verible-verilog-syntax {} +
+
       - name: Format Verilog by Verible
         run: find . -type f -name '*.v' -exec ./verible-verilog-format --inplace {} +
 
