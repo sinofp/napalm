@@ -1,3 +1,6 @@
+`timescale 1ns / 1ps
+
+
 module hazard_unit(
                    input [4:0] reg_ra1,
                    input [4:0] reg_ra2

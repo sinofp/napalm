@@ -1,3 +1,6 @@
+`timescale 1ns / 1ps
+
+
 module decode (/*AUTOARG*/
    // Outputs
    rd1, rd2, imm_ext,
@@ -6,7 +9,9 @@ module decode (/*AUTOARG*/
    ) ;
    input  clk;
    input [31:0] pcp4d, inst;
-   output [31:0] rd1, rd2, imm_ext;
+   output [31:0] rd1, rd2, imm_ext, pcp4f;
+
+   assign pcp4f = pcp4d;
    
    cu CU ();
 
