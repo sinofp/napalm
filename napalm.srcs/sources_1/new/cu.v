@@ -38,7 +38,7 @@ module cu (
   //assign imm26Ext = {6'b0, inst[25:0]};
 
   // for shift imm
-  assign sa = inst[10:6];
+  // assign sa = inst[10:6];
 
   // for noop
   assign nop_inst = (inst == 32'b0) ? 1 : 0;
