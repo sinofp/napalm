@@ -44,6 +44,7 @@ module decode (
 
   wire [4:0] rs = inst[25:21];
   wire [4:0] rt = inst[20:16];
+  wire [4:0] rd = inst[15:11];
 
   reg [31:0] inst;
   reg wb_we;
@@ -66,18 +67,35 @@ module decode (
 
   wire[`BR_OP_LEN - 1 : 0] br_op;
   wire [1:0] extend_op;
+  // cu_reg_we is not final reg_we. It should be or with linkable
+  // linkable is (jump && (write_reg_dst == `WRITE_REG_DST_31))
+  wire cu_reg_we;
   cu CU (
       ._inst(_inst),
-      .br_op(br_op),
-      .extend_op(extend_op),
-      .reg_write_en(regWriteEn),
-      .memWriteEn(memWriteEn),
-      .aluOp(aluOp),
-      .writeRegDst(reg_wa),
+      
+      //.extend_op(extend_op),
+      .reg_we(reg_we),
+      .mem_we(mem_we),
+      .alu_op(alu_op),
+      .write_reg_dst(reg_wa),
       .srcAlu(srcAlu),
       .srcReg(srcReg),
       .saveRetAddrEn(link)
+      .br_op(br_op),
   );
+
+  wire linkable;
+  assign linkable = (jump && (write_reg_dst == `WRITE_REG_DST_31))
+  assign reg_we = cu_reg_we || linkable;
+
+  // 通过write_reg_dst获取寄存器地址
+  // `WRITE_REG_DST_RD: RD
+  // `WRITE_REG_DST_RT: RT
+  // `WRITE_REG_DST_31: $31
+  // `WRITE_REG_DST_DEFAULT: 
+  reg_write_addr = (write_reg_dst == `WRITE_REG_DST_RD) ? rd :
+  (write_reg_dst == `WRITE_REG_DST_RT) ? rt :
+  (write_reg_dst == `WRITE_REG_DST_31) ? 5'd31 : 5'd0;
 
   reg_file REG_FILE (
       .clk(clk),
@@ -99,5 +117,6 @@ module decode (
       .jump(jump),
       .pc_jump(pc_jump)
   )
+
 
 endmodule  // decode
