@@ -117,7 +117,15 @@
 `define ALU_OP_NOR 4'b1101 		// nor
 `define ALU_OP_SLLV 4'b1110 		// shift left logical variable
 
-`define BR_OP_LEN 
-
+// BR UNIT OP
+`define BR_OP_LEN  	3
+`define BR_OP_DEFAULT 		3'b000		// nothing to do
+`define BR_OP_DIRECTJUMP	3'b001		// nothing special
+`define BR_OP_GREATER		3'b010		// >
+`define BR_OP_GREATER_EQ	3'b011		// >=
+`define BR_OP_EQUAL			3'b100		// ==
+`define BR_OP_NOT_EQUAL		3'b101		// !=
+`define BR_OP_LESS			3'b110		// <
+`define BR_OP_LESS_EQ		3'b111		// <=
 // todo
 

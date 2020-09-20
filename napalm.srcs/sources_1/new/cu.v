@@ -16,14 +16,18 @@ module cu (
     output srcAlu,  // FOR MUX before ALU
     output [2:0] srcReg,  // FOR MUX after Data Memory
 
-    output saveRetAddrEn  // For saving PC + 8 into $31
+    output [4:0] sa,	  	// shift amount	
+    output saveRetAddrEn, 	// For saving PC + 8 into $31
+    output loadStall,	  	// for lb & lw
+    output brOp, 		  	// for br_unit
+    output [31:0] imm26Ext	// imm26 after extension
     // todo
 );
 
   wire [5:0] opcode = inst[31:26];
   wire [5:0] rFunc = inst[5:0];
   wire [4:0] rt = inst[20:16];
-
+ 
   wire rTemp;
   // R
   wire add_inst, addu_inst, and_inst, jr_inst, or_inst, sll_inst, sllv_inst, slt_inst, sltu_inst, sra_inst, srl_inst, srlv_inst, sub_inst, subu_inst, xor_inst, nor_inst, div_inst, divu_inst, mfhi_inst, mflo_inst, mult_inst, multu_inst;
@@ -35,6 +39,11 @@ module cu (
   wire bgez_inst, bgezal_inst, bltz_inst, bltzal_inst;
   // NOP
   wire nop_inst;
+
+
+
+  // for shift imm
+  assign sa = inst[10:6];
 
   // for noop
   assign nop_inst = (inst == 32'b0) ? 1 : 0;
@@ -62,7 +71,7 @@ module cu (
   assign mfhi_inst = (rTemp && rFunc == `MFHI_FUNC) ? 1 : 0;
   assign mflo_inst = (rTemp && rFunc == `MFLO_FUNC) ? 1 : 0;
   assign mult_inst = (rTemp && rFunc == `MULT_FUNC) ? 1 : 0;
-  assign multu_inst = (rTemp && rFunc == `MULTI_FUNC) ? 1 : 0;
+  assign multu_inst = (rTemp && rFunc == `MULTU_FUNC) ? 1 : 0;
 
   // for I
   assign addi_inst = (opcode == `ADDI_OP) ? 1 : 0;
@@ -92,9 +101,9 @@ module cu (
   assign j_inst = (opcode == `J_OP) ? 1 : 0;
   assign jal_inst = (opcode == `JAL_OP) ? 1 : 0;
 
-  // for link
-  assign saveRetAddrEn = (  (bgezal_inst && !lessThanZero)||
-						  (bltzal_inst &&  lessThanZero)    ) ? 1'b1 : 1'b0 ;	// bgezal
+  // // for link
+  // assign saveRetAddrEn = (  (bgezal_inst && !lessThanZero)||
+		// 				  (bltzal_inst &&  lessThanZero)    ) ? 1'b1 : 1'b0 ;	// bgezal
 
   /* Control Signals */
 
@@ -185,6 +194,8 @@ module cu (
 				 (lw_inst) ? `SRC_WRITE_REG_MEM :
 				 (jalr_inst|| jal_inst) ? `SRC_WRITE_REG_JDST :
 				 `SRC_WRITE_REG_DEFAULT;
+
+  assign brOp = ;				
 
   // todo
 endmodule
