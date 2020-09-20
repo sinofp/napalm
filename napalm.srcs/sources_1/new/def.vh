@@ -116,5 +116,8 @@
 `define ALU_OP_XOR 4'b1100 		// xor
 `define ALU_OP_NOR 4'b1101 		// nor
 `define ALU_OP_SLLV 4'b1110 		// shift left logical variable
+
+`define BR_OP_LEN 
+
 // todo
 
