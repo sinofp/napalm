@@ -14,7 +14,7 @@ module cu (
 
     output reg [5:0] prev_op,               // for lb & lw
     output [`BR_OP_LEN - 1 : 0] br_op,      // for br_unit
-    output [31:0] imm26Ext                  // imm26 after extension
+    output [31:0] imm_ext                  // imm26 after extension
 );
 
   wire [5:0] opcode = inst[31:26];
@@ -35,7 +35,7 @@ module cu (
 
 
   // to extend imm26 for J
-  assign imm26Ext = {6'b0, inst[25:0]};
+  //assign imm26Ext = {6'b0, inst[25:0]};
 
   // for shift imm
   assign sa = inst[10:6];
