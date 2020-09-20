@@ -12,7 +12,6 @@ module cu (
     output alu_src,                         // FOR MUX before ALU
     output [2:0] reg_write_data_mux,        // FOR MUX after Data Memory
 
-    output reg [5:0] prev_op,               // for lb & lw
     output [`BR_OP_LEN - 1 : 0] br_op,      // for br_unit
     output [31:0] imm_ext                  // imm after extension
 );
@@ -172,10 +171,6 @@ module cu (
   				       (j_inst || jal_inst) ? `BR_OP_DIRECTJUMP :
                  (jr_inst) ? `BR_OP_REG :
   				       `BR_OP_DEFAULT;
-
-  always @(posedge clk) begin
-      prev_op <= opcode;
-  end
 
   // todo
 endmodule

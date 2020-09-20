@@ -4,20 +4,14 @@
 module decode (
     input clk,
     input rst,
-    input _stall,
+    
     input [31:0] _pcp4,  // 输入的pc + 4
     input [31:0] _inst,  // 输入的inst
     input _reg_we,
     input [31:0] _reg_write_data,
     input [4:0] _reg_write_Addr,
 
-    output [31:0] rd1,  // 从寄存器堆输出的第一个data
-    output [31:0] rd2,  // 从寄存器堆输出的第二个data
-    output [31:0] imm_ext, // 扩展后的imm，在execute里选择到底用imm还是rd2放到alu里
-    output [3:0] alu_op,  // alu做什么运算
-    output alu_src,  // 选择哪个是alu的操作数
-    output reg [31:0] pcp8,  // 输出的pc + 4，这个和_pcp4d有一个周期的延迟
-
+    input _stall,
     //**************************Hazard Unit***************************************
     // execute阶段的写入使能、写入地址、写入数据
     input _exe_we,
@@ -26,13 +20,20 @@ module decode (
     // memory阶段的写入使能、写入地址、写入数据
     input _mem_we,
     input [4:0] _mem_wa,
-    input [31:0] _exe_wd,
+    input [31:0] _mem_wd,
     // writeback阶段的写入使能、写入地址、写入数据
     input _writeback_we,
     input [4:0] _writeback_wa,
     input [31:0] _writeback_wd,
     // 上面这些用于解决数据冲突时，不用做成reg缓存一个周期。因为冲突发生在当前周期。
     //**************************Hazard Unit***************************************
+
+    output [31:0] rd1,  // 从寄存器堆输出的第一个data
+    output [31:0] rd2,  // 从寄存器堆输出的第二个data
+    output [31:0] imm_ext, // 扩展后的imm，在execute里选择到底用imm还是rd2放到alu里
+    output [3:0] alu_op,  // alu做什么运算
+    output alu_src,  // 选择哪个是alu的操作数
+    output reg [31:0] pcp8,  // 输出的pc + 4，这个和_pcp4d有一个周期的延迟
 
     // output [4:0] sa, // alu的偏移量
     output reg_we,  // 写入reg的使能
@@ -46,6 +47,7 @@ module decode (
     // To instruction fetch
     output [31:0] pc_jump,
     output jump,
+    output [5:0] opCode,
     output stall
 );
 
@@ -55,6 +57,7 @@ module decode (
   wire [4:0] rs = inst[25:21];
   wire [4:0] rt = inst[20:16];
   wire [4:0] rd = inst[15:11];
+  opCode = inst[31:26];
 
   reg [31:0] inst;
   reg wb_we;
@@ -65,13 +68,13 @@ module decode (
   always @(posedge clk) begin
     if (rst) begin
       inst <= 32'b0;
-      pcp4d <= 32'b0;
+      pcp8 <= 32'b0;
       wb_we <= 1'b0;
       prev_op <= 6'b0;
     end else if (_stall) begin
       // 用上一周期的值
       inst <= inst;
-      pcp4d <= pcp4d;
+      pcp8 <= pcp8;
       wb_we <= wb_we;
       wb_wd <= wb_we;
       wb_wa <= wb_wa;
@@ -88,22 +91,21 @@ module decode (
   end
 
   wire[`BR_OP_LEN - 1 : 0] br_op;
-  wire [1:0] extend_op;
+  wire [1:0]write_reg_dst
   // cu_reg_we is not final reg_we. It should be or with linkable
   // linkable is (jump && (write_reg_dst == `WRITE_REG_DST_31))
   wire cu_reg_we;
   cu CU (
-      ._inst(_inst),
+      ._inst(inst),
       
-      //.extend_op(extend_op),
-      .reg_we(reg_we),
+      .reg_we(cu_reg_we),
       .mem_we(mem_we),
       .alu_op(alu_op),
-      .write_reg_dst(reg_wa),
-      .srcAlu(srcAlu),
-      .srcReg(srcReg),
-      .saveRetAddrEn(link)
+      .write_reg_dst(write_reg_dst),
+      .alu_src(alu_src),
+      .reg_write_data_mux(reg_wd_mux),
       .br_op(br_op),
+      .imm_ext(imm_ext)
   );
 
   wire linkable;
@@ -119,6 +121,8 @@ module decode (
   (write_reg_dst == `WRITE_REG_DST_RT) ? rt :
   (write_reg_dst == `WRITE_REG_DST_31) ? 5'd31 : 5'd0;
 
+  wire[31: 0] reg_rd1;
+  wire[31: 0] reg_rd2;
   reg_file REG_FILE (
       .clk(clk),
       .ra1(rs),
@@ -126,9 +130,16 @@ module decode (
       .wa (wb_wa),
       .we (wb_we),
       .wd (wb_wd),
-      .rd1(rd1),
-      .rd2(rd2)
+      .rd1(reg_rd1),
+      .rd2(reg_rd1)
   );
+
+  assign rd1 = (forward1 == `FORWARD_EXE) ? _exe_wd : 
+  (forward1 == `FORWARD_MEM) ? _mem_wd : 
+  (forward1 == `FORWARD_WB) ? _writeback_wd : reg_rd1; 
+  assign rd2 = (forward2 == `FORWARD_EXE) ? _exe_wd : 
+  (forward2 == `FORWARD_MEM) ? _mem_wd : 
+  (forward2 == `FORWARD_WB) ? _writeback_wd : reg_rd2;
 
   br_unit BR_UNIT (
       .clk(clk),
