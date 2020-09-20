@@ -88,3 +88,8 @@ napalm.runs/synth_1/cpu_utilization_synth.pb
 napalm.runs/synth_1/cpu_utilization_synth.rpt
 napalm.runs/synth_1/vivado.pb
 napalm.sim/sim_1/behav/xsim/xsim.dir/testbench_behav/xsim.mem
+napalm.sim/sim_1/behav/xsim/xsim.dir/testbench_behav/webtalk/xsim_webtalk.tcl
+napalm.sim/sim_1/behav/xsim/xsim.dir/testbench_behav/obj/xsim_1.c
+napalm.sim/sim_1/behav/xsim/webtalk_20316.backup.jou
+napalm.sim/sim_1/behav/xsim/webtalk.jou
+napalm.sim/sim_1/behav/xsim/testbench.tcl

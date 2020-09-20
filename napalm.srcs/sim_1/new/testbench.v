@@ -18,7 +18,7 @@ module testbench;
   end
 
   initial begin
-    #1000 clk = 1'bx;
+    #1 clk = 1'bx;
     rst_n = 1'bx;
     #(CLK_PERIOD / 4) clk = 1'b1;  // 0.25周期时，clk=1�?0.5周期=0�?1周期时为posedge
     rst_n = 1'b0;  // 第一个posedge时，rst为低电平→初始化pc
