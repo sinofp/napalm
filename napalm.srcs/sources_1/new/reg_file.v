@@ -3,13 +3,13 @@
 
 module reg_file (
     input         clk,
-    input  [ 4:0] ra1,
-    input  [ 4:0] ra2,
-    input  [ 4:0] wa,
-    input         we,
-    input  [31:0] wd,
-    output [31:0] rd1,
-    output [31:0] rd2
+    input  [ 4:0] ra1,  // 读地址1
+    input  [ 4:0] ra2,  // 读地址2
+    input  [ 4:0] wa,  // 写地址
+    input         we,  // 写么？
+    input  [31:0] wd,  // 写入的数据
+    output [31:0] rd1,  // 读出数据1
+    output [31:0] rd2  // 读出数据2
 );
 
   reg [31:1] gpr;

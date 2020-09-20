@@ -3,9 +3,9 @@
 
 module cu (
     input [31:0] inst,
-    input zeroRes,  // for beq
-    input greatThanZero,  // for BLEZ (!greatThanZero <= 0)
-    input lessThanZero,  // for BGEZ (!lessThanZero >= 0)
+    // input zeroRes,  // for beq
+    // input greatThanZero,  // for BLEZ (!greatThanZero <= 0)
+    // input lessThanZero,  // for BGEZ (!lessThanZero >= 0)
 
     output [2:0] jumpOp,  // For NPC
     output [1:0] extendOp,  // For Signal Extend

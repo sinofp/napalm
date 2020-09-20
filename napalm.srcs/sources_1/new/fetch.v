@@ -1,19 +1,27 @@
 `timescale 1ns / 1ps
 
-module fetch (/*AUTOARG*/
-   // Outputs
-   pcp4d, inst,
-   // Inputs
-   clk, rst
-   ) ;
-   input  clk, rst;
-   output [31:0] pcp4d = pc_now + 32'h4;
-   output [31:0] inst;
+module fetch (
+    input clk,
+    input rst,
+    output [31:0] pcp4d,
+    output [31:0] inst
+);
 
-   wire [31:0]   pc_now, pc_next;
+  assign pcp4d = pc_now + 32'h4;
 
-   pc PC (.clk(clk), .rst(rst), .pc_now(pc_now), .pc_next(pc_next));
+  wire [31:0] pc_now, pc_next;  // TODO pcnext逻辑，当然还有冲刷流水线
 
-   inst_mem INST_MEM(.clk(clk), .pc(pc_now), .inst(inst));
-   
-endmodule // fetch
+  pc PC (
+      .clk(clk),
+      .rst(rst),
+      .pc_now(pc_now),
+      .pc_next(pc_next)
+  );
+
+  inst_mem INST_MEM (
+      .clk (clk),
+      .pc  (pc_now),
+      .inst(inst)
+  );
+
+endmodule  // fetch
