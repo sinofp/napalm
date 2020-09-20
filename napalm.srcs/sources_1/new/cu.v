@@ -7,7 +7,7 @@ module cu (
     // input greatThanZero,  // for BLEZ (!greatThanZero <= 0)
     // input lessThanZero,  // for BGEZ (!lessThanZero >= 0)
 
-    output [2:0] jumpOp,  // For NPC
+    // output [2:0] jumpOp,  // For NPC
     output [1:0] extendOp,  // For Signal Extend
     output regWriteEn,  // For Register File
     output memWriteEn,  // For Data Memory
@@ -16,11 +16,11 @@ module cu (
     output srcAlu,  // FOR MUX before ALU
     output [2:0] srcReg,  // FOR MUX after Data Memory
 
-    output [4:0] sa,	  	// shift amount	
-    output saveRetAddrEn, 	// For saving PC + 8 into $31
-    output loadStall,	  	// for lb & lw
-    output brOp, 		  	// for br_unit
-    output [31:0] imm26Ext	// imm26 after extension
+    output [4:0] sa,	  				// shift amount	
+    // output saveRetAddrEn, 				// For saving PC + 8 into $31
+    output loadStall,	  				// for lb & lw
+    output [`BR_OP_LEN - 1 : 0] brOp, 	// for br_unit
+    output [31:0] imm26Ext				// imm26 after extension
     // todo
 );
 
@@ -109,35 +109,35 @@ module cu (
 
   /* Control Signals */
 
-  // jumpOp
-  assign jumpOp = (add_inst || addi_inst || addiu_inst|| addu_inst|| and_inst|| andi_inst|| lb_inst  || lui_inst || 
-		  		  lw_inst || nop_inst  || or_inst   || ori_inst || sb_inst || sll_inst || sllv_inst|| slt_inst || 
-				slti_inst || sltiu_inst|| sltu_inst || sra_inst || srl_inst|| srlv_inst|| sub_inst || subu_inst||
-				  sw_inst || xor_inst  || nor_inst  || xori_inst|| div_inst|| divu_inst|| mfhi_inst|| mflo_inst|| 
-				mult_inst || multu_inst) ? `JUMP_OP_P4 :		// pc + 4
+  // // jumpOp
+  // assign jumpOp = (add_inst || addi_inst || addiu_inst|| addu_inst|| and_inst|| andi_inst|| lb_inst  || lui_inst || 
+		//   		  lw_inst || nop_inst  || or_inst   || ori_inst || sb_inst || sll_inst || sllv_inst|| slt_inst || 
+		// 		slti_inst || sltiu_inst|| sltu_inst || sra_inst || srl_inst|| srlv_inst|| sub_inst || subu_inst||
+		// 		  sw_inst || xor_inst  || nor_inst  || xori_inst|| div_inst|| divu_inst|| mfhi_inst|| mflo_inst|| 
+		// 		mult_inst || multu_inst) ? `JUMP_OP_P4 :		// pc + 4
 
-				(beq_inst && !zeroRes) ? `JUMP_OP_P4 :			// beq
-				(beq_inst && zeroRes) ? `JUMP_OP_OFF :		 
+		// 		(beq_inst && !zeroRes) ? `JUMP_OP_P4 :			// beq
+		// 		(beq_inst && zeroRes) ? `JUMP_OP_OFF :		 
 
-				(bne_inst && !zeroRes) ? `JUMP_OP_OFF :			// bne
-				(bne_inst && zeroRes) ? `JUMP_OP_P4 :
+		// 		(bne_inst && !zeroRes) ? `JUMP_OP_OFF :			// bne
+		// 		(bne_inst && zeroRes) ? `JUMP_OP_P4 :
 
-				(jr_inst) ? `JUMP_OP_RS :						// jr
+		// 		(jr_inst) ? `JUMP_OP_RS :						// jr
 
-				(j_inst|| jal_inst) ? `JUMP_OP_DST :			// j、jal 
+		// 		(j_inst|| jal_inst) ? `JUMP_OP_DST :			// j、jal 
 
-				((bgez_inst|| bgezal_inst) && !lessThanZero) ? `JUMP_OP_OFF :	// bgez、bgezal
-				((bgez_inst|| bgezal_inst) && lessThanZero) ? `JUMP_OP_P4 :
+		// 		((bgez_inst|| bgezal_inst) && !lessThanZero) ? `JUMP_OP_OFF :	// bgez、bgezal
+		// 		((bgez_inst|| bgezal_inst) && lessThanZero) ? `JUMP_OP_P4 :
 
-				(bgtz_inst && greatThanZero) ? `JUMP_OP_OFF :	// bgtz
-				(bgtz_inst && !greatThanZero) ? `JUMP_OP_P4 :
+		// 		(bgtz_inst && greatThanZero) ? `JUMP_OP_OFF :	// bgtz
+		// 		(bgtz_inst && !greatThanZero) ? `JUMP_OP_P4 :
 
-				(blez_inst && !greatThanZero) ? `JUMP_OP_OFF :	// blez
-				(blez_inst && greatThanZero) ? `JUMP_OP_P4 :
+		// 		(blez_inst && !greatThanZero) ? `JUMP_OP_OFF :	// blez
+		// 		(blez_inst && greatThanZero) ? `JUMP_OP_P4 :
 
-				((bltz_inst|| bltzal_inst) && lessThanZero) ? `JUMP_OP_OFF :	// bltz、bltzal
-				((bltz_inst|| bltzal_inst) && !lessThanZero) ? `JUMP_OP_P4 :
-				`JUMP_OP_DEFAULT;
+		// 		((bltz_inst|| bltzal_inst) && lessThanZero) ? `JUMP_OP_OFF :	// bltz、bltzal
+		// 		((bltz_inst|| bltzal_inst) && !lessThanZero) ? `JUMP_OP_P4 :
+		// 		`JUMP_OP_DEFAULT;
 
   // extendOp
   assign extendOp = (lui_inst) ? `EXTEND_LEFT16 :
