@@ -2,7 +2,12 @@
 	"folders": [
 		{
 			"path": "napalm.srcs\\sources_1\\new"
+		},
+		{
+			"path": "napalm.srcs\\sim_1\\new"
+		},
+		{
+			"path": "test"
 		}
-	],
-	"settings": {}
+	]
 }

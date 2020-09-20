@@ -67,8 +67,11 @@
 !*.elf
 !*.bmm
 !*.xmp
+
+# End of https://www.toptal.com/developers/gitignore/api/vivado
 !*.csv
 !*.asm
+*.txt
 
 # End of https://www.toptal.com/developers/gitignore/api/vivado
 vivado.jou
