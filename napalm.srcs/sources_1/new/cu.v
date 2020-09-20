@@ -16,9 +16,11 @@ module cu (
     output srcAlu,  // FOR MUX before ALU
     output [2:0] srcReg,  // FOR MUX after Data Memory
 
-    output [4:0] sa,	  // shift amount	
-    output saveRetAddrEn, // For saving PC + 8 into $31
-    output loadStall	  // for lb & lw
+    output [4:0] sa,	  	// shift amount	
+    output saveRetAddrEn, 	// For saving PC + 8 into $31
+    output loadStall,	  	// for lb & lw
+    output brOp, 		  	// for br_unit
+    output [31:0] imm26Ext	// imm26 after extension
     // todo
 );
 
@@ -192,6 +194,8 @@ module cu (
 				 (lw_inst) ? `SRC_WRITE_REG_MEM :
 				 (jalr_inst|| jal_inst) ? `SRC_WRITE_REG_JDST :
 				 `SRC_WRITE_REG_DEFAULT;
+
+  assign brOp = ;				
 
   // todo
 endmodule
