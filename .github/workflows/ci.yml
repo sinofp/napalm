@@ -50,11 +50,14 @@ jobs:
           sudo apt install verilator
 
       - name: Lint
-        run: find . -type f \( -name '*.v' -o -name '*.vh' \) -exec verilator --lint-only -Wall {} \; |& tee log || true
+        run: |
+          cd napalm.srcs/sources_1/new
+          verilator --lint-only -Wall cpu.v |& tee log || true
 
       - name: Get Comment Body
         id: get-comment-body
         run: |
+          cd napalm.srcs/sources_1/new
           printf 'Output from Verilator:\n\n<pre>' > comment
           sed 's/napalm.srcs\/sources_1\/new\///g' log >> comment
           echo '</pre>' >> comment
@@ -71,4 +74,5 @@ jobs:
 
       - name: Fail if error occurs
         run: |
+          cd napalm.srcs/sources_1/new
           ! grep '%Error' log
