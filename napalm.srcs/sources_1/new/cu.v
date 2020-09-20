@@ -28,7 +28,7 @@ module cu (
   // J
   wire j_inst, jal_inst;
   // branch
-  wire bgez_inst, bgezal_inst, bltz_inst, bltzal_inst;
+  wire bgez_inst, bgezal_inst, bltz_inst, bltzal_inst, branch_inst;
   // NOP
   wire nop_inst;
 

@@ -33,12 +33,12 @@ module cpu (
   wire de_reg_we, de_mem_we;
   wire [4:0] de_reg_wa;
   wire [2:0] de_wd_mux;
-  wire [2:0] de_jump_op;
-  wire [1:0] de_extend_op;
-  wire [1:0] de_wb_dst_mux;
-  wire [2:0] de_wb_src_mux;
+  //wire [2:0] de_jump_op;
+  //wire [1:0] de_extend_op;
+  //wire [1:0] de_wb_dst_mux;
+  //wire [2:0] de_wb_src_mux;
 
-  wire [4:0] de_shamt;
+  //wire [4:0] de_shamt;
 
   // for hazard unit
   wire ed_we, md_we, wd_we;
@@ -143,7 +143,7 @@ module cpu (
       ._imm_ext(em_imm_ext),
       ._pcp8(em_pcp8),
       ._op_code(em_opcode),
-      .reg_we(mb_reg_we),
+      .reg_we(mw_reg_we),
       .mem_data(mw_mem_data),
       .alu_res(mw_alu_res),
       .imm_ext(mw_imm_ext),
@@ -161,7 +161,7 @@ module cpu (
       ._pcp8(mw_pcp8),  // 跳转的link addr
       ._reg_wd_mux(mw_wd_mux),  // cu的srcReg，用上面哪个数据写回
       ._reg_write_addr(mw_reg_wa),  // 写到哪个寄存�?
-      ._reg_we(mb_reg_we),  // write enable
+      ._reg_we(mw_reg_we),  // write enable
       .reg_we(wd_we),
       .reg_write_addr(wd_wa),  // 同上，但慢一个周�?
       .reg_write_data(wd_wd)

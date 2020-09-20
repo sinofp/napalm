@@ -42,10 +42,10 @@ module execute (
       rd2 <= 32'b0;
       imm_ext <= 32'b0;
       pcp8 <= 32'b0;
-      alu_op <= 3'b0;
-      reg_write_addr <= 4'b0;
-      reg_wd_mux <= 2'b0;
-      op_code <= 5'b0;
+      alu_op <= 4'b0;
+      reg_write_addr <= 5'b0;
+      reg_wd_mux <= 3'b0;
+      op_code <= 6'b0;
       reg_we <= 1'b0;
       mem_we <= 1'b0;
       alu_src <= 1'b0;

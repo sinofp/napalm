@@ -73,7 +73,7 @@ module decode (
       pcp4 <= pcp4;
       pcp8 <= pcp8;
       wb_we <= wb_we;
-      wb_wd <= wb_we;
+      wb_wd <= wb_wd;
       wb_wa <= wb_wa;
       // stall完了，prev op就不应该再是让它stall的load�?
       prev_op <= 6'b0;
@@ -82,8 +82,8 @@ module decode (
       pcp4 <= _pcp4;
       pcp8 <= _pcp4 + 4;
       wb_we <= _writeback_we;
-      wb_wd <= _writeback_we;
-      wb_wa <= _writeback_wd;
+      wb_wd <= _writeback_wd;
+      wb_wa <= _writeback_wa;
       prev_op <= inst[31:26];
     end
   end
