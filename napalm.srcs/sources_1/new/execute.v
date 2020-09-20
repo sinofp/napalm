@@ -12,20 +12,20 @@ module execute (
     input [31:0] _pcp8, // pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
     input [4:0] _reg_write_addr,  // 寄存器写入地址，在decode中已被计算
     // DELETED input [4:0] sa,  // alu位移运算的偏移量
-    input [5:0] _op_code, // 操作码，用于lb等访存操作
-    input [2:0] _reg_wd_mux, // reg写回的数据来源
+    input [5:0] _op_code,  // 操作码，用于lb等访存操作
+    input [2:0] _reg_wd_mux,  // reg写回的数据来源
     input _reg_we,  // 新来的指令要不要写入寄存器
     input _mem_we,  // 新来的指令要不要写入data mem
     input _stall,
     output [4:0] reg_write_addr,  // （传递）寄存器写入地址，在decode中已被计算
     output [31:0] imm_ext,  // （传递）扩张的立即数
     output [31:0] alu_res,  // alu运算结果。支持乘法除法的话，应该改成64位
-    output [31:0] rd2, // （传递）可能给reg_wd
-    output [2:0] reg_wd_mux, // （传递）reg写回的数据来源
-    output [5:0] op_code, // （传递）操作码，用于lb等访存操作
+    output [31:0] rd2,  // （传递）可能给reg_wd
+    output [2:0] reg_wd_mux,  // （传递）reg写回的数据来源
+    output [5:0] op_code,  // （传递）操作码，用于lb等访存操作
     output [31:0] pcp8, // （传递）pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
     // DELETED output [31:0] data_wd_e,  // 要写入存储器的话，写入什么内容
-    
+
     // DELETED output [31:0] pc_jump,  // 跳转到的地址，br unit输出
     // DELETED output jump,  // 这条指令是否跳转，br unit的输出
     output overflow,  // addiu和addi的区别
