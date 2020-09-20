@@ -195,7 +195,7 @@ module cu (
 				 sra_inst || sllv_inst || srlv_inst|| srav_inst) ? `SRC_WRITE_REG_ALU:
 				 (lw_inst) ? `SRC_WRITE_REG_MEM :
 				 (jal_inst) ? `SRC_WRITE_REG_JDST :
-				 `SRC_WRITE_REG_DEFAULT;
+				 `SRC_WRITE_REG_DEFAULT ;
 
   assign brOp = (beq_inst) ? `BR_OP_EQUAL :
   				(bgez_inst || bgezal_inst) ? `BR_OP_GREATER_EQ :
