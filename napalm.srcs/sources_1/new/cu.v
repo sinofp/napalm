@@ -16,13 +16,13 @@ module cu (
     output [              31:0] imm_ext  // imm after extension
 );
 
-  wire [5:0] opcode = inst[31:26];
-  wire [5:0] rFunc = inst[5:0];
-  wire [4:0] rt = inst[20:16];
+  wire [5:0] opcode = _inst[31:26];
+  wire [5:0] rFunc = _inst[5:0];
+  wire [4:0] rt = _inst[20:16];
 
   wire rTemp;
   // R
-  wire add_inst, addu_inst, and_inst, jr_inst, or_inst, sll_inst, sllv_inst, slt_inst, sltu_inst, sra_inst, srl_inst, srlv_inst, sub_inst, subu_inst, xor_inst, nor_inst, div_inst, divu_inst, mfhi_inst, mflo_inst, mult_inst, multu_inst;
+  wire add_inst, addu_inst, and_inst, jr_inst, or_inst, sll_inst, sllv_inst, slt_inst, sltu_inst, sra_inst, srav_inst, srl_inst, srlv_inst, sub_inst, subu_inst, xor_inst, nor_inst, div_inst, divu_inst, mfhi_inst, mflo_inst, mult_inst, multu_inst;
   // I
   wire addi_inst, addiu_inst, andi_inst, beq_inst, bgtz_inst, blez_inst, bne_inst, lb_inst, lui_inst, lw_inst, ori_inst, sb_inst, slti_inst, sltiu_inst, sw_inst, xori_inst;
   // J
@@ -40,7 +40,7 @@ module cu (
   // assign sa = inst[10:6];
 
   // for noop
-  assign nop_inst = (inst == 32'b0) ? 1 : 0;
+  assign nop_inst = (_inst == 32'b0) ? 1 : 0;
 
   // for R
   assign rTemp = (opcode == `R_OP) ? 1 : 0;
@@ -104,10 +104,10 @@ module cu (
   //         (sll_inst || sra_inst  || srl_inst ) ? 
   // 		  `EXTEND_DEFAULT;
 
-  assign imm_ext = (lui_inst) ? {inst[15:0], 16'b0} :
-                   (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? {{16{inst[15:0][15]}}, inst[15:0]} :
-                   (andi_inst|| ori_inst  || xori_inst) ? {16'b0, inst[15:0]} :
-                   (sll_inst || sra_inst  || srl_inst ) ? {27'b0, inst[10:6]} :
+  assign imm_ext = (lui_inst) ? {_inst[15:0], 16'b0} :
+                   (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? {{16{_inst[15]}}, _inst[15:0]} :
+                   (andi_inst|| ori_inst  || xori_inst) ? {16'b0, _inst[15:0]} :
+                   (sll_inst || sra_inst  || srl_inst ) ? {27'b0, _inst[10:6]} :
                    32'b0;
 
   // Register Write Enable
@@ -130,7 +130,7 @@ module cu (
 			            (slt_inst|| slti_inst|| sltu_inst|| sltiu_inst) ? `ALU_OP_SLT :
 			            (sra_inst) ? `ALU_OP_SRA :
 			            (srl_inst) ? `ALU_OP_SRL :
-			            (srlv_inst) ? `ALU_OP_SLRV :
+			            (srlv_inst) ? `ALU_OP_SRLV :
 			            (sub_inst|| subu_inst|| beq_inst) ? `ALU_OP_MINUS :
 			            (xor_inst|| xori_inst) ? `ALU_OP_XOR :
 			            (nor_inst) ? `ALU_OP_NOR :

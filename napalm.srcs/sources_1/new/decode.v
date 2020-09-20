@@ -48,18 +48,17 @@ module decode (
 );
 
   wire [2:0] forward1, forward2;
-  wire stall;
-
-  wire [4:0] rs = inst[25:21];
-  wire [4:0] rt = inst[20:16];
-  wire [4:0] rd = inst[15:11];
-  assign opcode = inst[31:26];
 
   reg [31:0] inst;
   reg wb_we;
   reg [31:0] wb_wd;
   reg [4:0] wb_wa;
   reg [5:0] prev_op;
+
+  wire [4:0] rs = inst[25:21];
+  wire [4:0] rt = inst[20:16];
+  wire [4:0] rd = inst[15:11];
+  assign opcode = inst[31:26];
 
   always @(posedge clk) begin
     if (rst) begin
@@ -141,6 +140,7 @@ module decode (
       .clk(clk),
       .rd1(rd1),
       .rd2(rd2),
+      .mode(br_op),
       .pcp4(_pcp4d),
       .imm_ext(imm_ext),
       .jump(jump),

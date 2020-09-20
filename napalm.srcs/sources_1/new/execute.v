@@ -17,13 +17,13 @@ module execute (
     input _reg_we,  // 新来的指令要不要写入寄存器
     input _mem_we,  // 新来的指令要不要写入data mem
     input _stall,
-    output [4:0] reg_write_addr,  // （传递）寄存器写入地址，在decode中已被计算
-    output [31:0] imm_ext,  // （传递）扩张的立即数
+    output reg [4:0] reg_write_addr,  // （传递）寄存器写入地址，在decode中已被计算
+    output reg [31:0] imm_ext,  // （传递）扩张的立即数
     output [31:0] alu_res,  // alu运算结果。支持乘法除法的话，应该改成64位
-    output [31:0] rd2,  // （传递）可能给reg_wd
-    output [2:0] reg_wd_mux,  // （传递）reg写回的数据来源
-    output [5:0] op_code,  // （传递）操作码，用于lb等访存操作
-    output [31:0] pcp8, // （传递）pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
+    output reg [31:0] rd2,  // （传递）可能给reg_wd
+    output reg [2:0] reg_wd_mux,  // （传递）reg写回的数据来源
+    output reg [5:0] op_code,  // （传递）操作码，用于lb等访存操作
+    output reg [31:0] pcp8, // （传递）pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
     // DELETED output [31:0] data_wd_e,  // 要写入存储器的话，写入什么内容
 
     // DELETED output [31:0] pc_jump,  // 跳转到的地址，br unit输出
@@ -32,12 +32,8 @@ module execute (
     output reg reg_we,  // （传递）这条指令要不要写入寄存器
     output reg mem_we  // （传递）这条指令要不要写入data mem
 );
-
-  reg [31:0] rd1, rd2, imm_ext, pcp8;
+  reg [31:0] rd1;
   reg [3:0] alu_op;
-  reg [4:0] reg_write_addr;
-  reg [2:0] reg_wd_mux;
-  reg [5:0] op_code;
   reg alu_src;
 
   always @(posedge clk) begin
@@ -52,7 +48,7 @@ module execute (
       op_code <= 5'b0;
       reg_we <= 1'b0;
       mem_we <= 1'b0;
-      _alu_src <= 1'b0;
+      alu_src <= 1'b0;
 
     end else begin
       rd1 <= _rd1;

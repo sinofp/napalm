@@ -9,10 +9,8 @@ module fetch (
     output [31:0] pcp4,
     output [31:0] inst
 );
-
-  assign pcp4 = pc_now + 32'h4;
-
   wire [31:0] pc_now;
+  assign pcp4 = pc_now + 32'h4;
 
   reg [31:0] pc_jump;
   reg jump;
