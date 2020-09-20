@@ -31,7 +31,7 @@ module memory (
   data_mem DATA_MEM (
       .clk (clk),
       .addr(res),
-      .rd2  (rd2),
+      .rd2 (rd2),
       .we  (mem_we),
       .rd  (mem_data)
   );
