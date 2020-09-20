@@ -2,6 +2,7 @@
 `include "def.vh"
 
 
+
 module alu (
     input [31:0] num1,
     input [31:0] num2,
@@ -13,12 +14,16 @@ module alu (
 
 
   reg [32:0] alu_reg;
+  reg [32:0] alu_hi;
+  reg [32:0] alu_lo;
   assign res = alu_reg[31:0];
+  assign hi = alu_hi[31:0];  //for DIV, MULT
+  assign lo = alu_lo[31:0];  //32 bits
 
   always @(*) begin
     case (aluOp)
       `ALU_OP_PLUS:// +
-         begin
+		begin
         alu_reg <= num1 + num2;
         if ((num1 >= 0) && (num2 >= 0) && (alu_reg < 0)) begin
           overflow <= 1'b1;
@@ -31,18 +36,31 @@ module alu (
       `ALU_OP_AND://&
             alu_reg <= num1 & num2;
 
-      `ALU_OP_DIV:// %
-    	begin
-        alu_reg <= num1 % num2;
+      `ALU_OP_DIV:// / %
+		begin
+        begin
+          alu_hi <= num1 % num2;
+        end
+        begin
+          alu_lo <= num1 / num2;
+        end
         if (num2 == 0) begin
           overflow <= 1'b1;
-        end else if ((num1 >= 0) && (num2 < 0) && (alu_reg > 0)) begin
+        end else if ((num1 >= 0) && (num2 < 0) && (alu_hi > 0)) begin
           overflow <= 1'b1;
-        end else if ((num1 < 0) && (num2 > 0) && (alu_reg >= 0)) begin
+        end else if ((num1 < 0) && (num2 > 0) && (alu_hi >= 0)) begin
           overflow <= 1'b1;
-        end else if ((num1 <= 0) && (num2 < 0) && (alu_reg < 0)) begin
+        end else if ((num1 <= 0) && (num2 < 0) && (alu_hi < 0)) begin
           overflow <= 1'b1;
-        end else if ((num1 >= 0) && (num2 > 0) && (alu_reg < 0)) begin
+        end else if ((num1 >= 0) && (num2 > 0) && (alu_hi < 0)) begin
+          overflow <= 1'b1;
+        end else if ((num1 >= 0) && (num2 < 0) && (alu_lo > 0)) begin
+          overflow <= 1'b1;
+        end else if ((num1 < 0) && (num2 > 0) && (alu_lo >= 0)) begin
+          overflow <= 1'b1;
+        end else if ((num1 <= 0) && (num2 < 0) && (alu_lo < 0)) begin
+          overflow <= 1'b1;
+        end else if ((num1 >= 0) && (num2 > 0) && (alu_lo < 0)) begin
           overflow <= 1'b1;
         end else begin
           overflow <= 1'b0;  // no overflow
@@ -51,14 +69,14 @@ module alu (
 
       `ALU_OP_MULT://*
         begin
-        alu_reg <= num1 * num2;
-        if ((num1 >= 0) && (num2 < 0) && (alu_reg > 0)) begin
+        {alu_hi[31:0], alu_lo[31:0]} <= num1 * num2;
+        if ((num1 >= 0) && (num2 < 0) && ({alu_hi[31:0], alu_lo[31:0]} > 0)) begin
           overflow <= 1'b1;
-        end else if ((num1 < 0) && (num2 >= 0) && (alu_reg > 0)) begin
+        end else if ((num1 < 0) && (num2 >= 0) && ({alu_hi[31:0], alu_lo[31:0]} > 0)) begin
           overflow <= 1'b1;
-        end else if ((num1 <= 0) && (num2 <= 0) && (alu_reg < 0)) begin
+        end else if ((num1 <= 0) && (num2 <= 0) && ({alu_hi[31:0], alu_lo[31:0]} < 0)) begin
           overflow <= 1'b1;
-        end else if ((num1 >= 0) && (num2 >= 0) && (alu_reg < 0)) begin
+        end else if ((num1 >= 0) && (num2 >= 0) && ({alu_hi[31:0], alu_lo[31:0]} < 0)) begin
           overflow <= 1'b1;
         end else begin
           overflow <= 1'b0;  // no overflow
