@@ -6,6 +6,8 @@
 // 2.   f d e m w
 // 3.     f d e m w
 // 4.       f d e m w
+//            ^ 对这个 decode 有影响的：e3、m2、w1。
+//              e、m、w的顺序是重要的，试想 123 把不通值写入 4 依赖的寄存器
 // 1 的 writeback 阶段影响下面三个指令的 decode 阶段
 // 换句话说，每条指令在 decode 时要看前三条指令是否影响自己，
 // 所谓前三条指令，就是当前在 execute 的、memory 的、writeback 的。
@@ -18,6 +20,7 @@
 //    f2 d2 xx xx xx
 //       f2 d2 e2 m2 w2
 // 第二个 d2 时，1 进行到 m，此时可以正常前推。
+// stall 的条件只有要从 execute 阶段前推，且 execute 阶段的指令为 load 时。 
 
 module hazard_unit (
     input [4:0] _read_addr1,  // reg_file要读取的两个地址
@@ -34,17 +37,17 @@ module hazard_unit (
     output stall
 );
 
-  assign forward1 = (_writeback_we & (_read_addr1 != 0) & (_read_addr1 == _writeback_wa))? `FORWARD_WB:
-                    (_mem_we & (_read_addr1 != 0) & (_read_addr1 == _mem_wa))? `FORWARD_WB:
-                    (_exe_we & (_read_addr1 != 0) & (_read_addr1 == _exe_wa))? `FORWARD_WB:
+  assign forward1 = (_exe_we & (_read_addr1 != 0) & (_read_addr1 == _exe_wa))? `FORWARD_EXE:
+                    (_mem_we & (_read_addr1 != 0) & (_read_addr1 == _mem_wa))? `FORWARD_MEM:
+                    (_writeback_we & (_read_addr1 != 0) & (_read_addr1 == _writeback_wa))? `FORWARD_WB:
                     `FORWARD_DEFAULT;
 
-  assign forward2 = (_writeback_we & (_read_addr2 != 0) & (_read_addr2 == _writeback_wa))? `FORWARD_WB:
-                    (_mem_we & (_read_addr2 != 0) & (_read_addr2 == _mem_wa))? `FORWARD_WB:
-                    (_exe_we & (_read_addr2 != 0) & (_read_addr2 == _exe_wa))? `FORWARD_WB:
+  assign forward2 = (_exe_we & (_read_addr2 != 0) & (_read_addr2 == _exe_wa))? `FORWARD_EXE:
+                    (_mem_we & (_read_addr2 != 0) & (_read_addr2 == _mem_wa))? `FORWARD_MEM:
+                    (_writeback_we & (_read_addr2 != 0) & (_read_addr2 == _writeback_wa))? `FORWARD_WB:
                     `FORWARD_DEFAULT;
 
-  // 本该前推，但遇到了lw/lh
-  assign stall = ((forward1 != `FORWARD_DEFAULT) | (forward1 != `FORWARD_DEFAULT)) &
+  // 本该前推，但遇到了从内存中 load 数据的指令
+  assign stall = ((forward1 == `FORWARD_EXE) | (forward2 == `FORWARD_EXE)) &
                  ((prev_op == `LW_OP) | (prev_op == `LB_OP));
 endmodule  // hazard_unit
