@@ -67,7 +67,9 @@
 !*.elf
 !*.bmm
 !*.xmp
-!*.csv
-!*.asm
 
 # End of https://www.toptal.com/developers/gitignore/api/vivado
+!*.csv
+!*.asm
+*.txt
+
