@@ -22,7 +22,7 @@ module cu (
 
   wire rTemp;
   // R
-  wire add_inst, addu_inst, and_inst, jr_inst, or_inst, sll_inst, sllv_inst, slt_inst, sltu_inst, sra_inst, srav_inst, srl_inst, srlv_inst, sub_inst, subu_inst, xor_inst, nor_inst, div_inst, divu_inst, mfhi_inst, mflo_inst, mult_inst, multu_inst;
+  wire add_inst, addu_inst, and_inst, jr_inst, or_inst, sll_inst, sllv_inst, slt_inst, sltu_inst, sra_inst, srl_inst, srlv_inst, sub_inst, subu_inst, xor_inst, nor_inst, div_inst, divu_inst, mfhi_inst, mflo_inst, mult_inst, multu_inst;
   // I
   wire addi_inst, addiu_inst, andi_inst, beq_inst, bgtz_inst, blez_inst, bne_inst, lb_inst, lui_inst, lw_inst, ori_inst, sb_inst, slti_inst, sltiu_inst, sw_inst, xori_inst;
   // J
@@ -157,7 +157,7 @@ module cu (
 				                      (addi_inst|| addiu_inst|| andi_inst|| sltiu_inst|| ori_inst|| xori_inst||
 				                       add_inst || addu_inst || sub_inst || subu_inst || slt_inst|| sltu_inst|| 
 				                       and_inst || or_inst   || nor_inst || xor_inst  || sll_inst|| srl_inst || 
-				                       sra_inst || sllv_inst || srlv_inst|| srav_inst) ? `SRC_WRITE_REG_ALU:
+				                       sra_inst || sllv_inst || srlv_inst) ? `SRC_WRITE_REG_ALU:
 				                      (lw_inst) ? `SRC_WRITE_REG_MEM :
 				                      (jal_inst) ? `SRC_WRITE_REG_JDST :
 				                      `SRC_WRITE_REG_DEFAULT ;

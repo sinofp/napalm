@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-
+`include "def.vh"
 
 module cpu (
     input clk,
@@ -80,9 +80,9 @@ module cpu (
       .stall(stall)
   );
 
-  wire [31:0] em_res;
-  wire [2:0] em_wb_dst_mux;
-  wire [31:0] em_mem_wd;
+  //wire [31:0] em_res;
+  //wire [2:0] em_wb_dst_mux;
+  //wire [31:0] em_mem_wd;
 
   wire overflow;  // 这玩意，现在不输出给任何�?
 
@@ -121,6 +121,7 @@ module cpu (
       .reg_we(em_reg_we),
       .mem_we(em_mem_we)
   );
+  
 
   wire [31:0] mw_mem_data;
 
@@ -166,4 +167,17 @@ module cpu (
       .reg_write_addr(wd_wa),  // 同上，但慢一个周�?
       .reg_write_data(wd_wd)
   );
+  
+  assign ed_we = em_reg_we;
+  assign md_we = mw_reg_we;
+  assign ed_wa = em_reg_wa;
+  assign md_wa = mw_reg_wa;
+  assign ed_wd = (em_wd_mux == `SRC_WRITE_REG_IMM) ? em_imm_ext :
+  (em_wd_mux == `SRC_WRITE_REG_ALU) ? em_alu_res :
+  (em_wd_mux == `SRC_WRITE_REG_JDST) ? em_pcp8 : 32'bx;
+  assign md_wd = (mw_wd_mux == `SRC_WRITE_REG_IMM) ? mw_imm_ext :
+  (mw_wd_mux == `SRC_WRITE_REG_ALU) ? mw_alu_res :
+  (mw_wd_mux == `SRC_WRITE_REG_JDST) ? mw_pcp8 : 
+  (mw_wd_mux == `SRC_WRITE_REG_MEM) ? mw_mem_data : 
+  32'bx;
 endmodule

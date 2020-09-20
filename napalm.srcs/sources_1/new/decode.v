@@ -129,7 +129,7 @@ module decode (
       .we (wb_we),
       .wd (wb_wd),
       .rd1(reg_rd1),
-      .rd2(reg_rd1)
+      .rd2(reg_rd2)
   );
 
   assign rd1 = (forward1 == `FORWARD_EXE) ? _exe_wd : 

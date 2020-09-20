@@ -12,7 +12,7 @@ module br_unit (
     output jump  // 跳转不跳
 );
   wire conditionSatisfied;
-  assign condtionSatisfied = ((mode == `BR_OP_GREATER && rd1 > rd2) ||
+  assign conditionSatisfied = ((mode == `BR_OP_GREATER && rd1 > rd2) ||
   (mode == `BR_OP_GREATER_EQ && rd1 >= rd2) || 
   (mode == `BR_OP_EQUAL && rd1 == rd2) || 
   (mode == `BR_OP_NOT_EQUAL && rd1 != rd2) || 
