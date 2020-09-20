@@ -130,3 +130,7 @@
 `define BR_OP_REG			4'b1000 	// for jr
 // todo
 
+`define FORWARD_DEFAULT 2'b00
+`define FORWARD_EXE 2'b01
+`define FORWARD_MEM 2'b10
+`define FORWARD_WB 2'b11
