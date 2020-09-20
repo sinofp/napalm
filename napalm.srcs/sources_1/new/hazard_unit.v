@@ -1,33 +1,53 @@
 `timescale 1ns / 1ps
 `include "def.vh"
 
+//    时间 →
+// 1. f d e m w
+// 2.   f d e m w
+// 3.     f d e m w
+// 4.       f d e m w
+//            ^ 对这个 decode 有影响的：e3、m2、w1。
+//              e、m、w的顺序是重要的，试想 123 把不通值写入 4 依赖的寄存器
+// 1 的 writeback 阶段影响下面三个指令的 decode 阶段
+// 换句话说，每条指令在 decode 时要看前三条指令是否影响自己，
+// 所谓前三条指令，就是当前在 execute 的、memory 的、writeback 的。
+// forward 确定 decode 的 read data 应该从 reg_fil来，还是从 e/m/w 来。
+
+// load stall 是 1 是从 m 中 load 的指令，2 是需要 1 写回值的其他指令。
+// 在 2 进行到 d 时，1 刚到 e，但数据要到 m 才能前推过来。
+// 也就是说 2 要停一个周期，变成下图的样子：
+// f1 d1 e1 m1 w1
+//    f2 d2 xx xx xx
+//       f2 d2 e2 m2 w2
+// 第二个 d2 时，1 进行到 m，此时可以正常前推。
+// stall 的条件只有要从 execute 阶段前推，且 execute 阶段的指令为 load 时。 
+
 module hazard_unit (
-    input  [4:0] reg_ra1,  // 寄存器的读地址1
-    input  [4:0] reg_ra2,
-    input  [4:0] reg_wa_alu,  // alu的运算结果，要写回的数据地址
-    input  [4:0] reg_wa_mem,  // 内存读出结果，要写回的地址
-    input        reg_we_alu,  // alu的res要写入寄存器
-    input        reg_we_mem,  // mem的rd要写入寄存器
-    input  [5:0] optype,
+    input [4:0] _read_addr1,  // reg_file要读取的两个地址
+    input [4:0] _read_addr2,
+    input _exe_we,  // execute阶段的写入使能、写入地址，下面mem、wb同理
+    input [4:0] _exe_wa,
+    input _mem_we,
+    input [4:0] _mem_wa,
+    input _writeback_we,
+    input [4:0] _writeback_wa,
+    input [5:0] prev_op,  // 上一条指令是从mem读内存的类型么？
     output [1:0] forward1,  // 前推mux选择
     output [1:0] forward2,
-    // 用于lw/lh stall
-    output       stall_if,  // if 停止一周期，保留当前值
-    output       stall_id,  // id 停止一周期，保留当前值
-    output       flush_ex  // ex 之后的随便来
+    output stall
 );
 
-  assign forward1 = (reg_we_alu & (reg_ra1 != 0) & (reg_ra1 == reg_wa_alu))? 2'b10: // alu的结果要写回，这个地址和我要读的一样 —— 我直接从alu那里读
-                    (reg_we_mem & (reg_ra1 != 0) & (reg_ra1 == reg_wa_mem))? 2'b01: // mem的结果要写回，这个地址和我要读的一样 —— 我直接从mem那里读
-                    2'b11; // 不前推
+  assign forward1 = (_exe_we & (_read_addr1 != 0) & (_read_addr1 == _exe_wa))? `FORWARD_EXE:
+                    (_mem_we & (_read_addr1 != 0) & (_read_addr1 == _mem_wa))? `FORWARD_MEM:
+                    (_writeback_we & (_read_addr1 != 0) & (_read_addr1 == _writeback_wa))? `FORWARD_WB:
+                    `FORWARD_DEFAULT;
 
-  assign forward2 = (reg_we_alu & (reg_ra1 != 0) & (reg_ra1 == reg_wa_alu))? 2'b10:
-                     (reg_we_mem & (reg_ra2 != 0) & (reg_ra1 == reg_wa_mem))? 2'b01:
-                     2'b11;
+  assign forward2 = (_exe_we & (_read_addr2 != 0) & (_read_addr2 == _exe_wa))? `FORWARD_EXE:
+                    (_mem_we & (_read_addr2 != 0) & (_read_addr2 == _mem_wa))? `FORWARD_MEM:
+                    (_writeback_we & (_read_addr2 != 0) & (_read_addr2 == _writeback_wa))? `FORWARD_WB:
+                    `FORWARD_DEFAULT;
 
-  // 本该前推，但遇到了lw/lh
-  wire load_stall = ((forward1 != 2'b11) | (forward1 != 2'b11)) & (optype == `LW_OP); // TODO 这里还有lh
-  assign stall_if = load_stall;
-  assign stall_id = load_stall;
-  assign flush_ex = load_stall;
+  // 本该前推，但遇到了从内存中 load 数据的指令
+  assign stall = ((forward1 == `FORWARD_EXE) | (forward2 == `FORWARD_EXE)) &
+                 ((prev_op == `LW_OP) | (prev_op == `LB_OP));
 endmodule  // hazard_unit

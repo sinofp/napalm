@@ -4,72 +4,79 @@
 module execute (
     input clk,
     input rst,
-    input [3:0] _aluOp,  // alu到底是加减乘除
-    input _srcAlu,  // rd2还是imm——可以放到decode，也可以放在这
+    input [3:0] _alu_op,  // alu到底是加减乘除
+    input _alu_src,  // rd2还是imm——可以放到decode，也可以放在这
     input [31:0] _rd1,  // 寄存器读出的第一个数
     input [31:0] _rd2,
     input [31:0] _imm_ext,  // 扩张的立即数
-    input  [31:0] _pcp4f, // pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
-    input [4:0] sa,  // alu位移运算的偏移量
-    input _regWriteEn,  // 新来的指令要不要写入寄存器
-    input _memWriteEn,  // 新来的指令要不要写入data mem
+    input [31:0] _pcp8, // pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
+    input [4:0] _reg_write_addr,  // 寄存器写入地址，在decode中已被计算
+    // DELETED input [4:0] sa,  // alu位移运算的偏移量
+    input [5:0] _op_code,  // 操作码，用于lb等访存操作
+    input [2:0] _reg_wd_mux,  // reg写回的数据来源
+    input _reg_we,  // 新来的指令要不要写入寄存器
+    input _mem_we,  // 新来的指令要不要写入data mem
     input _stall,
-    output [31:0] res,  // alu运算结果。支持乘法除法的话，应该改成64位
-    output [31:0] data_wd_e,  // 要写入存储器的话，写入什么内容
-    output [4:0] reg_wa_e,  // 寄存器写入地址，对应前面的output [1:0]  writeRegDst
-    output [31:0] pc_jump,  // 跳转到的地址，br unit输出
-    output jump,  // 这条指令是否跳转，br unit的输出
+    output [4:0] reg_write_addr,  // （传递）寄存器写入地址，在decode中已被计算
+    output [31:0] imm_ext,  // （传递）扩张的立即数
+    output [31:0] alu_res,  // alu运算结果。支持乘法除法的话，应该改成64位
+    output [31:0] rd2,  // （传递）可能给reg_wd
+    output [2:0] reg_wd_mux,  // （传递）reg写回的数据来源
+    output [5:0] op_code,  // （传递）操作码，用于lb等访存操作
+    output [31:0] pcp8, // （传递）pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
+    // DELETED output [31:0] data_wd_e,  // 要写入存储器的话，写入什么内容
+
+    // DELETED output [31:0] pc_jump,  // 跳转到的地址，br unit输出
+    // DELETED output jump,  // 这条指令是否跳转，br unit的输出
     output overflow,  // addiu和addi的区别
-    output reg regWriteEn,  // 这条指令要不要写入寄存器
-    output reg memWriteEn  // 这条指令要不要写入data mem
+    output reg reg_we,  // （传递）这条指令要不要写入寄存器
+    output reg mem_we  // （传递）这条指令要不要写入data mem
 );
 
-  reg [31:0] rd1, rd2, imm_ext, pcp4f;
-  reg [3:0] aluOp;
-  reg srcAlu;
+  reg [31:0] rd1, rd2, imm_ext, pcp8;
+  reg [3:0] alu_op;
+  reg [4:0] reg_write_addr;
+  reg [2:0] reg_wd_mux;
+  reg [5:0] op_code;
+  reg alu_src;
 
   always @(posedge clk) begin
     if (rst | _stall) begin
-      // stall时直接让alu休息一周期
-      regWriteEn <= 0;
-      memWriteEn <= 0;
-      srcAlu <= `ALU_SRC_DEFAULT;
-      aluOp <= 3'b0;
-      // wbaddr
-      // dmemwid
       rd1 <= 32'b0;
       rd2 <= 32'b0;
       imm_ext <= 32'b0;
+      pcp8 <= 32'b0;
+      alu_op <= 3'b0;
+      reg_write_addr <= 4'b0;
+      reg_wd_mux <= 2'b0;
+      op_code <= 5'b0;
+      reg_we <= 1'b0;
+      mem_we <= 1'b0;
+      _alu_src <= 1'b0;
+
     end else begin
-      regWriteEn <= _regWriteEn;
-      memWriteEn <= _memWriteEn;
-      srcAlu <= `ALU_SRC_DEFAULT;
-      aluOp <= _aluOp;
-      // wbaddr
-      // dmemwid
       rd1 <= _rd1;
       rd2 <= _rd2;
       imm_ext <= _imm_ext;
+      pcp8 <= _pcp8;
+      alu_op <= _alu_op;
+      reg_write_addr <= _reg_write_addr;
+      reg_wd_mux <= _reg_wd_mux;
+      op_code <= _op_code;
+      reg_we <= _reg_we;
+      mem_we <= _mem_we;
+      alu_src <= _alu_src;
     end
   end
 
   alu ALU (
-      .aluOp(aluOp),
+      .alu_op(alu_op),
       .num1(rd1),
-      .num2((srcAlu == `ALU_SRC_EXTEND) ? imm_ext : rd2),
+      .num2((alu_src == `ALU_SRC_EXTEND) ? imm_ext : rd2),
       .sa(sa),
       .res(res),
       .overflow(overflow)
   );
-
-  br_unit BR_UNIT (
-      .clk(clk),
-      .rd1(rd1),
-      .rd2(rd2),
-      .pcp4(pcp4f),
-      .imm_ext(imm_ext),
-      .jump(jump),
-      .pc_jump(pc_jump)
-  );
+  ;
 
 endmodule  // execute

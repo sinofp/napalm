@@ -4,36 +4,34 @@
 module memory (
     input clk,
     input rst,
-    input [31:0] rd2,  // 要写入的数据
-    input mem_we,  // 要写入么？
-    input [31:0] alu_res,  // alu的运算结果，同时也是访存的地址
-    input [4:0] reg_write_addr,  // 给写回阶段的，写回到哪个寄存器——reg_file.wa
-
+    input [31:0] _rd2,  // 要写入的数据
+    input _mem_we,  // 要写入么？
+    input [31:0] _alu_res,  // alu的运算结果，同时也是访存的地址
+    input [4:0] _reg_write_addr,  // 给写回阶段的，写回到哪个寄存器--reg_file.wa
     output reg [31:0] mem_data,  // 读出的数据
-    output reg [ 4:0] reg_wa  // 给写回的，和_reg_wa_m差一个周期
+    output reg [4:0] reg_write_addr  // 给写回的，和_reg_write_addr差一个周期
 );
 
-  reg [31:0] wd, res;
+  reg [31:0] rd2, alu_res;
   reg mem_we;
-
   always @(posedge clk) begin
     if (rst) begin
-      res <= 32'b0;
-      reg_wa <= 5'b0;
-      wd <= 32'b0;
+      alu_res <= 32'b0;
+      reg_write_addr <= 5'b0;
+      rd2 <= 32'b0;
       mem_we <= 1'b0;
     end else begin
-      res <= alu_res;
-      reg_wa <= reg_write_addr;
-      wd <= rd2;
-      mem_we <= mem_we;
+      alu_res <= _alu_res;
+      reg_write_addr <= _reg_write_addr;
+      rd2 <= _rd2;
+      mem_we <= _mem_we;
     end
   end
 
   data_mem DATA_MEM (
       .clk (clk),
       .addr(res),
-      .wd  (wd),
+      .rd2 (rd2),
       .we  (mem_we),
       .rd  (mem_data)
   );

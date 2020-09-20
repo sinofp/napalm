@@ -6,11 +6,11 @@ module fetch (
     input [31:0] _pc_jump,
     input _jump,
     input _stall,
-    output [31:0] pcp4d,
+    output [31:0] pcp4,
     output [31:0] inst
 );
 
-  assign pcp4d = pc_now + 32'h4;
+  assign pcp4 = pc_now + 32'h4;
 
   wire [31:0] pc_now;
 
