@@ -4,23 +4,12 @@
 module decode (
     input clk,
     input rst,
+    input _stall,
     input [31:0] _pcp4,  // 输入的pc + 4
     input [31:0] _inst,  // 输入的inst
     input _reg_we,
     input [31:0] _reg_write_data,
     input [4:0] _reg_write_Addr,
-
-    //*********************************************
-    // For Hazard Unit 
-    input [4:0] _exe_wa,
-    input [4:0] _mem_wa, 
-    input [4:0] _writeback_wa,
-    input _exe_we, _mem_we, _writeback_we,
-
-    output [1:0] forward1, 
-    output [1:0] forward2,
-    output stall,
-    //*********************************************
 
     output [31:0] rd1,  // 从寄存器堆输出的第一个data
     output [31:0] rd2,  // 从寄存器堆输出的第二个data
@@ -28,6 +17,23 @@ module decode (
     output [3:0] alu_op,  // alu做什么运算
     output alu_src,  // 选择哪个是alu的操作数
     output reg [31:0] pcp8,  // 输出的pc + 4，这个和_pcp4d有一个周期的延迟
+
+    //**************************Hazard Unit***************************************
+    // execute阶段的写入使能、写入地址、写入数据
+    input _exe_we,
+    input [4:0] _exe_wa,
+    input [31:0] _exe_wd,
+    // memory阶段的写入使能、写入地址、写入数据
+    input _mem_we,
+    input [4:0] _mem_wa,
+    input [31:0] _exe_wd,
+    // writeback阶段的写入使能、写入地址、写入数据
+    input _writeback_we,
+    input [4:0] _writeback_wa,
+    input [31:0] _writeback_wd,
+    // 上面这些用于解决数据冲突时，不用做成reg缓存一个周期。因为冲突发生在当前周期。
+    //**************************Hazard Unit***************************************
+
     // output [4:0] sa, // alu的偏移量
     output reg_we,  // 写入reg的使能
     output mem_we,  // 写入内存的使能
@@ -40,7 +46,11 @@ module decode (
     // To instruction fetch
     output [31:0] pc_jump,
     output jump,
+    output stall
 );
+
+  wire [2:0] forward1, forward2;
+  wire stall;
 
   wire [4:0] rs = inst[25:21];
   wire [4:0] rt = inst[20:16];
@@ -50,18 +60,30 @@ module decode (
   reg wb_we;
   reg [31:0] wb_wd;
   reg [4:0] wb_wa;
+  reg [5:0] prev_op;
 
   always @(posedge clk) begin
     if (rst) begin
       inst <= 32'b0;
       pcp4d <= 32'b0;
       wb_we <= 1'b0;
+      prev_op <= 6'b0;
+    end else if (_stall) begin
+      // 用上一周期的值
+      inst <= inst;
+      pcp4d <= pcp4d;
+      wb_we <= wb_we;
+      wb_wd <= wb_we;
+      wb_wa <= wb_wa;
+      // stall完了，prev op就不应该再是让它stall的load了
+      prev_op <= 6'b0;
     end else begin
       inst <= _inst;
       pcp8 <= _pcp4 + 4;
-      wb_we <= _wb_we;
-      wb_wd <= _wb_we;
-      wb_wa <= _wb_wa;
+      wb_we <= _writeback_we;
+      wb_wd <= _writeback_we;
+      wb_wa <= _writeback_wd;
+      prev_op <= inst[31:26];
     end
   end
 
@@ -116,7 +138,21 @@ module decode (
       .imm_ext(imm_ext),
       .jump(jump),
       .pc_jump(pc_jump)
-  )
+  );
 
+  hazard_unit HAZARD_UNIT (
+      ._read_addr1(rs),
+      ._read_addr2(rt),
+      ._exe_we(_exe_we),
+      ._exe_wa(_exe_wa),
+      ._mem_we(_mem_we),
+      ._mem_wa(_mem_wa),
+      ._writeback_we(_writeback_we),
+      ._writeback_wa(_writeback_wa),
+      .prev_op(prev_op),
+      .forward1(forward1),
+      .forward2(forward2),
+      .stall(stall)
+  );
 
 endmodule  // decode

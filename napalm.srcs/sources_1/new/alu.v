@@ -1,7 +1,21 @@
 `timescale 1ns / 1ps
-`include "def.vh"
+//`include "def.vh"
 
-
+`define ALU_OP_DEFAULT 4'b0000 		// Default
+`define ALU_OP_PLUS 4'b0001 		// +
+`define ALU_OP_AND 4'b0010 		// &
+`define ALU_OP_DIV 4'b0011 		// / and %
+`define ALU_OP_MULT 4'b0100 		// *
+`define ALU_OP_OR 4'b0101 		// |
+`define ALU_OP_SLL 4'b0110 		// <<
+`define ALU_OP_SLT 4'b0111 		// set on less than
+`define ALU_OP_SRA 4'b1000 		// >>
+`define ALU_OP_SRL 4'b1001 		// >>
+`define ALU_OP_SRLV 4'b1010 		// shift right logical variable
+`define ALU_OP_MINUS 4'b1011 		// -
+`define ALU_OP_XOR 4'b1100 		// xor
+`define ALU_OP_NOR 4'b1101 		// nor
+`define ALU_OP_SLLV 4'b1110 		// shift left logical variable
 
 module alu (
     input [31:0] num1,

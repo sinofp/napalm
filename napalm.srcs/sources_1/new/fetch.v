@@ -5,6 +5,7 @@ module fetch (
     input rst,
     input [31:0] _pc_jump,
     input _jump,
+    input _stall,
     output [31:0] pcp4d,
     output [31:0] inst
 );
@@ -19,6 +20,10 @@ module fetch (
   always @(posedge clk) begin
     if (rst) begin
       jump <= 0;
+    end else if (_stall) begin
+      // 用上一周期的值
+      pc_jump <= pc_jump;
+      jump <= jump;
     end else begin
       pc_jump <= _pc_jump;
       jump <= _jump;
