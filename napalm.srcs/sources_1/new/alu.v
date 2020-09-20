@@ -116,7 +116,7 @@ module alu (
 			end
 		end
 */
-      
+
       `ALU_OP_OR:// |
             alu_reg <= _num1 | _num2;
       `ALU_OP_SLL:// <<
