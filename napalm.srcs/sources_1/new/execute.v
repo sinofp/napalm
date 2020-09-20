@@ -61,15 +61,6 @@ module execute (
       .res(res),
       .overflow(overflow)
   );
-
-  br_unit BR_UNIT (
-      .clk(clk),
-      .rd1(rd1),
-      .rd2(rd2),
-      .pcp4(pcp4f),
-      .imm_ext(imm_ext),
-      .jump(jump),
-      .pc_jump(pc_jump)
-  );
+  ;
 
 endmodule  // execute

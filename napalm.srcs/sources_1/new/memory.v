@@ -14,7 +14,6 @@ module memory (
 
   reg [31:0] rd2, alu_res;
   reg mem_we;
-
   always @(posedge clk) begin
     if (rst) begin
       alu_res <= 32'b0;
