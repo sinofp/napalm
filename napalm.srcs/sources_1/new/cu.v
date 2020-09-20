@@ -5,14 +5,13 @@ module cu (
     input [31:0] _inst,
 
     output [1:0] extend_op,                 // For Signal Extend
-    output reg_W_e,                         // For Register File
-    output mem_W_e,                         // For Data Memory
+    output reg_we,                         // For Register File
+    output mem_we,                         // For Data Memory
     output [3:0] alu_op,                    // For ALU
     output [1:0] write_reg_dst,             // FOR MUX before register heap
     output alu_src,                         // FOR MUX before ALU
     output [2:0] reg_write_data_mux,        // FOR MUX after Data Memory
 
-    output [4:0] sa,                        // shift amount	
     output reg [5:0] prev_op,               // for lb & lw
     output [`BR_OP_LEN - 1 : 0] br_op,      // for br_unit
     output [31:0] imm26Ext                  // imm26 after extension
@@ -106,14 +105,14 @@ module cu (
 				  `EXTEND_DEFAULT;
 
   // Register Write Enable
-  assign reg_W_e = (add_inst || addi_inst|| addiu_inst|| addu_inst|| and_inst || andi_inst|| jal_inst || 
+  assign reg_we = (add_inst || addi_inst|| addiu_inst|| addu_inst|| and_inst || andi_inst|| jal_inst || 
 					          lb_inst  || lui_inst || lw_inst   || or_inst  || ori_inst || sll_inst || sllv_inst|| 
 					          slt_inst || slti_inst|| sltiu_inst|| sltu_inst|| sra_inst || srl_inst || srlv_inst|| 
 					          sub_inst || subu_inst|| xor_inst  || nor_inst || xori_inst|| div_inst || divu_inst|| 
 					          mfhi_inst|| mflo_inst|| mult_inst || multu_inst ) ? 1'b1 : 1'b0;
 
   // Memory Write Enable
-  assign mem_W_e = (sb_inst || sw_inst) ? 1'b1 : 1'b0;
+  assign mem_we = (sb_inst || sw_inst) ? 1'b1 : 1'b0;
 
   // ALU operator
   assign alu_op = (add_inst|| addi_inst|| addiu_inst|| addu_inst|| lb_inst|| lw_inst|| sb_inst|| sw_inst) ? `ALU_OP_PLUS :
