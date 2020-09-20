@@ -41,6 +41,8 @@ module cu (
   wire nop_inst;
 
 
+  // to extend imm26 for J
+  assign imm26Ext = {6'b0, inst[25:0]};
 
   // for shift imm
   assign sa = inst[10:6];
@@ -192,10 +194,18 @@ module cu (
 				 and_inst || or_inst   || nor_inst || xor_inst  || sll_inst|| srl_inst || 
 				 sra_inst || sllv_inst || srlv_inst|| srav_inst) ? `SRC_WRITE_REG_ALU:
 				 (lw_inst) ? `SRC_WRITE_REG_MEM :
-				 (jalr_inst|| jal_inst) ? `SRC_WRITE_REG_JDST :
+				 (jal_inst) ? `SRC_WRITE_REG_JDST :
 				 `SRC_WRITE_REG_DEFAULT;
 
-  assign brOp = ;				
+  assign brOp = (beq_inst) ? `BR_OP_EQUAL :
+  				(bgez_inst || bgezal_inst) ? `BR_OP_GREATER_EQ :
+  				(bgtz_inst) ? `BR_OP_GREATER :
+  				(blez_inst) ? `BR_OP_LESS_EQ :
+  				(bltz_inst || bltzal_inst) ? `BR_OP_LESS :
+  				(bne_inst) ? `BR_OP_NOT_EQUAL :
+  				(j_inst || jal_inst) ? `BR_OP_DIRECTJUMP :
+  				(jr_inst) ? `BR_OP_REG :
+  				`BR_OP_DEFAULT;				
 
   // todo
 endmodule
