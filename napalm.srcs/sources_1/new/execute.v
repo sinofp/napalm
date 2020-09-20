@@ -5,7 +5,7 @@ module execute (
     input clk,
     input rst,
     input [3:0] _alu_op,  // alu到底是加减乘除
-    input _src_alu,  // rd2还是imm——可以放到decode，也可以放在这
+    input _alu_src,  // rd2还是imm——可以放到decode，也可以放在这
     input [31:0] _rd1,  // 寄存器读出的第一个数
     input [31:0] _rd2,
     input [31:0] _imm_ext,  // 扩张的立即数
@@ -38,7 +38,7 @@ module execute (
   reg [4:0] reg_write_addr;
   reg [2:0] reg_wd_mux;
   reg [5:0] op_code;
-  reg src_alu;
+  reg alu_src;
 
   always @(posedge clk) begin
     if (rst | _stall) begin
@@ -52,7 +52,7 @@ module execute (
       op_code <= 5'b0;
       reg_we <= 1'b0;
       mem_we <= 1'b0;
-      _src_alu <= 1'b0;
+      _alu_src <= 1'b0;
 
     end else begin
       rd1 <= _rd1;
@@ -65,14 +65,14 @@ module execute (
       op_code <= _op_code;
       reg_we <= _reg_we;
       mem_we <= _mem_we;
-      src_alu <= _src_alu;
+      alu_src <= _alu_src;
     end
   end
 
   alu ALU (
       .alu_op(alu_op),
       .num1(rd1),
-      .num2((src_alu == `ALU_SRC_EXTEND) ? imm_ext : rd2),
+      .num2((alu_src == `ALU_SRC_EXTEND) ? imm_ext : rd2),
       .sa(sa),
       .res(res),
       .overflow(overflow)
