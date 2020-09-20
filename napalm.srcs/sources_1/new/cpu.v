@@ -87,12 +87,12 @@ module cpu (
   wire overflow;  // 这玩意，现在不输出给任何人
 
   wire em_reg_we, em_mem_we;
-  wire [4:0] em_reg_wa;
+  wire [ 4:0] em_reg_wa;
   wire [32:0] em_imm_ext;
   wire [32:0] em_alu_res;
   wire [32:0] em_rd2;
-  wire [2:0] em_wd_mux;
-  wire [5:0] em_opcode;
+  wire [ 2:0] em_wd_mux;
+  wire [ 5:0] em_opcode;
   wire [32:0] em_pcp8;
 
   execute EXECUTE (
@@ -120,7 +120,7 @@ module cpu (
       .overflow(overflow),
       .reg_we(em_reg_we),
       .mem_we(em_mem_we)
-      );
+  );
 
   wire [31:0] mw_mem_data;
 
