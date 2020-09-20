@@ -29,7 +29,7 @@ module fetch (
       .clk(clk),
       .rst(rst),
       .pc_now(pc_now),
-      .pc_next(jump? pc_jump: pcp4d)
+      .pc_next(jump ? pc_jump : pcp4d)
   );
 
   inst_mem INST_MEM (

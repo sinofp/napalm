@@ -25,10 +25,10 @@ module decode (
     output [2:0] srcReg  // 貌似是写回的数据来源，选哪条路
 );
 
-  wire[4:0] rs = inst[25:21];
-  wire[4:0] rt = inst[20:16];
+  wire [4:0] rs = inst[25:21];
+  wire [4:0] rt = inst[20:16];
 
-  reg  [31:0] inst;
+  reg [31:0] inst;
   reg wb_we;
   reg [31:0] wb_wd;
   reg [4:0] wb_wa;
