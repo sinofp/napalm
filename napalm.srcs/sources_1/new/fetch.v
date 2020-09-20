@@ -23,7 +23,7 @@ module fetch (
     end else if (_stall) begin
       // 用上一周期的值
       pc_jump <= pc_jump;
-      jump <= jump; 
+      jump <= jump;
     end else begin
       pc_jump <= _pc_jump;
       jump <= _jump;
