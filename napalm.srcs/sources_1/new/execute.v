@@ -21,7 +21,7 @@ module execute (
     output [31:0] imm_ext,  // （传递）扩张的立即数
     output [31:0] alu_res,  // alu运算结果。支持乘法除法的话，应该改成64位
     output [31:0] rd2, // （传递）可能给reg_wd
-    output [2:0] reg_wd_mux // （传递）reg写回的数据来源
+    output [2:0] reg_wd_mux, // （传递）reg写回的数据来源
     output [5:0] op_code, // （传递）操作码，用于lb等访存操作
     output [31:0] pcp8, // （传递）pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
     // DELETED output [31:0] data_wd_e,  // 要写入存储器的话，写入什么内容
