@@ -3,7 +3,6 @@
 module fetch (
     input clk,
     input rst,
-    input [31:0] _pc_next,
     input [31:0] _pc_jump,
     input _jump,
     output [31:0] pcp4d,

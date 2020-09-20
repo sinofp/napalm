@@ -3,6 +3,7 @@
 
 module decode (
     input clk,
+    input rst,
     input [31:0] _pcp4d,  // 输入的pc + 4
     input [31:0] _inst,  // 输入的inst
     output [31:0] rd1,  // 从寄存器堆输出的第一个data
@@ -24,7 +25,6 @@ module decode (
     output [2:0] srcReg  // 貌似是写回的数据来源，选哪条路
 );
 
-  // TODO 寄存器堆需要的，暂时没写
   wire[4:0] rs = inst[25:21];
   wire[4:0] rt = inst[20:16];
 
