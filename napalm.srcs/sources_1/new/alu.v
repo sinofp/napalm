@@ -5,7 +5,6 @@
 module alu (
     input [31:0] _num1,
     input [31:0] _num2,
-    input [4:0] _sa,
     input [3:0] _alu_op,
     output [31:0] alu_res,
     output reg overflow
@@ -19,6 +18,8 @@ module alu (
   //assign hi = alu_hi[31:0];//for DIV, MULT
   //assign lo = alu_lo[31:0];//32 bits
 
+  wire [5:0] _sa;
+  assign _sa = _num2[5:0];
   always @(*) begin
     case (_alu_op)
       `ALU_OP_PLUS:// +
@@ -86,7 +87,7 @@ module alu (
 				end
 		end
 
-        `ALU_OP_MULT://*
+        `ALU_OP_MULT://
         begin
             {alu_hi[31:0],alu_lo[31:0]} <= _num1 * _num2;
             if((_num1 >= 0) && (_num2 < 0) && ({alu_hi[31:0],alu_lo[31:0]} > 0))
@@ -115,6 +116,7 @@ module alu (
 			end
 		end
 */
+      
       `ALU_OP_OR:// |
             alu_reg <= _num1 | _num2;
       `ALU_OP_SLL:// <<

@@ -75,3 +75,16 @@
 
 # End of https://www.toptal.com/developers/gitignore/api/vivado
 vivado.jou
+napalm.sim/sim_1/behav/xsim/glbl.v
+napalm.sim/sim_1/behav/xsim/testbench_vlog.prj
+napalm.sim/sim_1/behav/xsim/xvlog.pb
+napalm.xpr
+napalm.sim/sim_1/behav/xsim/xelab.pb
+*.xml
+napalm.runs/synth_1/cpu.dcp
+napalm.runs/synth_1/cpu.tcl
+napalm.runs/synth_1/cpu.vds
+napalm.runs/synth_1/cpu_utilization_synth.pb
+napalm.runs/synth_1/cpu_utilization_synth.rpt
+napalm.runs/synth_1/vivado.pb
+napalm.sim/sim_1/behav/xsim/xsim.dir/testbench_behav/xsim.mem
