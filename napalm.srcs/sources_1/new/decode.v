@@ -4,6 +4,7 @@
 module decode (
     input clk,
     input rst,
+    input _stall,
     input [31:0] _pcp4d,  // 输入的pc + 4
     input [31:0] _inst,  // 输入的inst
     output [31:0] rd1,  // 从寄存器堆输出的第一个data
@@ -38,6 +39,13 @@ module decode (
       inst <= 32'b0;
       pcp4d <= 32'b0;
       wb_we <= 1'b0;
+    end else if (_stall) begin
+      // 用上一周期的值
+      inst <= inst;
+      pcp4d <= pcp4d;
+      wb_we <= wb_we;
+      wb_wd <= wb_we;
+      wb_wa <= wb_wa;
     end else begin
       inst <= _inst;
       pcp4d <= _pcp4d;

@@ -13,6 +13,7 @@ module execute (
     input [4:0] sa,  // alu位移运算的偏移量
     input _regWriteEn,  // 新来的指令要不要写入寄存器
     input _memWriteEn,  // 新来的指令要不要写入data mem
+    input _stall,
     output [31:0] res,  // alu运算结果。支持乘法除法的话，应该改成64位
     output [31:0] data_wd_e,  // 要写入存储器的话，写入什么内容
     output [4:0] reg_wa_e,  // 寄存器写入地址，对应前面的output [1:0]  writeRegDst
@@ -28,7 +29,8 @@ module execute (
   reg srcAlu;
 
   always @(posedge clk) begin
-    if (rst) begin
+    if (rst | _stall) begin
+      // stall时直接让alu休息一周期
       regWriteEn <= 0;
       memWriteEn <= 0;
       srcAlu <= `ALU_SRC_DEFAULT;
