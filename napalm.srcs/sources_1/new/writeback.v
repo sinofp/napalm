@@ -10,7 +10,7 @@ module writeback (
     input      [ 2:0] _reg_wd_mux,  // cu的srcReg，用上面哪个数据写回
     input      [ 4:0] _reg_write_addr,  // 写到哪个寄存器
     input             _reg_we,  // write enable
-	input      [31:0] pcp8,
+    input      [31:0] pcp8,
     output reg        reg_we,
     output reg [ 4:0] reg_write_addr,  // 同上，但慢一个周期
     output     [31:0] reg_write_data
