@@ -8,9 +8,9 @@ module memory (
     input mem_we,  // 要写入么？
     input [31:0] alu_res,  // alu的运算结果，同时也是访存的地址
     input [4:0] reg_write_addr,  // 给写回阶段的，写回到哪个寄存器——reg_file.wa
-	
+
     output reg [31:0] mem_data,  // 读出的数据
-    output reg [4:0] reg_wa  // 给写回的，和_reg_wa_m差一个周期
+    output reg [ 4:0] reg_wa  // 给写回的，和_reg_wa_m差一个周期
 );
 
   reg [31:0] wd, res;
