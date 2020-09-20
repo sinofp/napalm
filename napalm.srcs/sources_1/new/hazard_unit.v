@@ -20,15 +20,15 @@
 // 第二个 d2 时，1 进行到 m，此时可以正常前推。
 
 module hazard_unit (
-    input [4:0] _read_addr1, // reg_file要读取的两个地址
+    input [4:0] _read_addr1,  // reg_file要读取的两个地址
     input [4:0] _read_addr2,
-    input _exe_we, // execute阶段的写入使能、写入地址，下面mem、wb同理
+    input _exe_we,  // execute阶段的写入使能、写入地址，下面mem、wb同理
     input [4:0] _exe_wa,
     input _mem_we,
     input [4:0] _mem_wa,
     input _writeback_we,
     input [4:0] _writeback_wa,
-    input [5:0] prev_op, // 上一条指令是从mem读内存的类型么？
+    input [5:0] prev_op,  // 上一条指令是从mem读内存的类型么？
     output [1:0] forward1,  // 前推mux选择
     output [1:0] forward2,
     output stall

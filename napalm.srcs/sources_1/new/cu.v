@@ -5,15 +5,15 @@ module cu (
     input [31:0] _inst,
 
     //output [1:0] extend_op,                 // For Signal Extend
-    output reg_we,                          // For Register File
-    output mem_we,                          // For Data Memory
-    output [3:0] alu_op,                    // For ALU
-    output [1:0] write_reg_dst,             // FOR MUX before register heap
-    output alu_src,                         // FOR MUX before ALU
-    output [2:0] reg_write_data_mux,        // FOR MUX after Data Memory
+    output       reg_we,  // For Register File
+    output       mem_we,  // For Data Memory
+    output [3:0] alu_op,  // For ALU
+    output [1:0] write_reg_dst,  // FOR MUX before register heap
+    output       alu_src,  // FOR MUX before ALU
+    output [2:0] reg_write_data_mux,  // FOR MUX after Data Memory
 
-    output [`BR_OP_LEN - 1 : 0] br_op,      // for br_unit
-    output [31:0] imm_ext                  // imm after extension
+    output [`BR_OP_LEN - 1 : 0] br_op,  // for br_unit
+    output [              31:0] imm_ext  // imm after extension
 );
 
   wire [5:0] opcode = inst[31:26];
@@ -99,10 +99,10 @@ module cu (
 
   // // extendOp
   // assign extend_op = (lui_inst) ? `EXTEND_LEFT16 :
-		// 		  (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? `EXTEND_S_IMM32 :
-		// 		  (andi_inst|| ori_inst  || xori_inst) ? `EXTEND_U_OFF32 :
+  // 		  (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? `EXTEND_S_IMM32 :
+  // 		  (andi_inst|| ori_inst  || xori_inst) ? `EXTEND_U_OFF32 :
   //         (sll_inst || sra_inst  || srl_inst ) ? 
-		// 		  `EXTEND_DEFAULT;
+  // 		  `EXTEND_DEFAULT;
 
   assign imm_ext = (lui_inst) ? {inst[15:0], 16'b0} :
                    (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? {{16{inst[15:0][15]}}, inst[15:0]} :

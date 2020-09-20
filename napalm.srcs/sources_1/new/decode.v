@@ -4,7 +4,7 @@
 module decode (
     input clk,
     input rst,
-    
+
     input [31:0] _pcp4,  // 输入的pc + 4
     input [31:0] _inst,  // 输入的inst
     input _reg_we,
@@ -41,7 +41,7 @@ module decode (
     // output        link, // 把pc_next写入$31，其实br unit可以放在decode里，不用等alu
     // DELETED output [2:0] jumpOp,  // 给br unit，告诉它走哪种跳转
     //output [1:0] extend_op,  // 符号扩展怎么扩展，据说有好几种
-    output [4:0] reg_write_addr, // 写回哪个寄存器
+    output [4:0] reg_write_addr,  // 写回哪个寄存器
     output [2:0] reg_wd_mux,  // 貌似是写回的数据来源，选哪条路
 
     // To instruction fetch
@@ -90,14 +90,14 @@ module decode (
     end
   end
 
-  wire[`BR_OP_LEN - 1 : 0] br_op;
-  wire [1:0]write_reg_dst;
+  wire [`BR_OP_LEN - 1 : 0] br_op;
+  wire [1:0] write_reg_dst;
   // cu_reg_we is not final reg_we. It should be or with linkable
   // linkable is (jump && (write_reg_dst == `WRITE_REG_DST_31))
   wire cu_reg_we;
   cu CU (
       ._inst(inst),
-      
+
       .reg_we(cu_reg_we),
       .mem_we(mem_we),
       .alu_op(alu_op),
@@ -121,8 +121,8 @@ module decode (
   (write_reg_dst == `WRITE_REG_DST_RT) ? rt :
   (write_reg_dst == `WRITE_REG_DST_31) ? 5'd31 : 5'd0;
 
-  wire[31: 0] reg_rd1;
-  wire[31: 0] reg_rd2;
+  wire [31:0] reg_rd1;
+  wire [31:0] reg_rd2;
   reg_file REG_FILE (
       .clk(clk),
       .ra1(rs),
@@ -136,7 +136,7 @@ module decode (
 
   assign rd1 = (forward1 == `FORWARD_EXE) ? _exe_wd : 
   (forward1 == `FORWARD_MEM) ? _mem_wd : 
-  (forward1 == `FORWARD_WB) ? _writeback_wd : reg_rd1; 
+  (forward1 == `FORWARD_WB) ? _writeback_wd : reg_rd1;
   assign rd2 = (forward2 == `FORWARD_EXE) ? _exe_wd : 
   (forward2 == `FORWARD_MEM) ? _mem_wd : 
   (forward2 == `FORWARD_WB) ? _writeback_wd : reg_rd2;
