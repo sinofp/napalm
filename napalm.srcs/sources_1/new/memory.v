@@ -15,7 +15,7 @@ module memory (
     input [31:0] _imm_ext,
     output reg reg_we,
     output [31:0] mem_data,  // 读出的数�?
-    output reg[31:0] alu_res,
+    output reg [31:0] alu_res,
     output reg [31:0] imm_ext,
     output reg [2:0] reg_wd_mux,
     output reg [31:0] pcp8,
@@ -42,18 +42,18 @@ module memory (
       mem_we <= _mem_we;
       op_code <= _op_code;
       pcp8 <= _pcp8;
-      reg_we <= _reg_we; 
+      reg_we <= _reg_we;
       imm_ext <= _imm_ext;
       reg_wd_mux <= _reg_wd_mux;
     end
   end
 
   data_mem DATA_MEM (
-      .clk (clk),
+      .clk(clk),
       ._addr(alu_res),
-      ._wd (rd2),
-      ._we  (mem_we),
-      .rd  (mem_data),
+      ._wd(rd2),
+      ._we(mem_we),
+      .rd(mem_data),
       ._opcode(op_code)
   );
 

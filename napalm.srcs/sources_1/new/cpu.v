@@ -121,7 +121,7 @@ module cpu (
       .reg_we(em_reg_we),
       .mem_we(em_mem_we)
   );
-  
+
 
   wire [31:0] mw_mem_data;
 
@@ -167,7 +167,7 @@ module cpu (
       .reg_write_addr(wd_wa),  // 同上，但慢一个周�?
       .reg_write_data(wd_wd)
   );
-  
+
   assign ed_we = em_reg_we;
   assign md_we = mw_reg_we;
   assign ed_wa = em_reg_wa;
