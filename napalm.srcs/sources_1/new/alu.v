@@ -6,7 +6,7 @@ module alu (
     input [31:0] _num1,
     input [31:0] _num2,
     input [3:0] _alu_op,
-//new	input [31:0] _imm,// for SLTI,SLTIU   传入这俩指令低16位扩展而来的32位的立即数imm是什么
+    //new	input [31:0] _imm,// for SLTI,SLTIU   传入这俩指令低16位扩展而来的32位的立即数imm是什么
     output [31:0] alu_res,
     output reg overflow
 );
@@ -26,12 +26,9 @@ module alu (
       `ALU_OP_PLUS:// +
 		begin
         alu_reg <= _num1 + _num2;
-        if (alu_reg < 0)
-		begin
+        if (alu_reg < 0) begin
           overflow <= 1'b1;
-		end
-        else
-		begin
+        end else begin
           overflow <= 1'b0;  // no overflow
         end
       end
@@ -149,7 +146,7 @@ module alu (
             alu_reg <= ~(_num1 | _num2);
 
 
-/*new
+      /*new
 	  //add SLTI,SLTIU
 	  //传入的_imm 为 (低16位扩展而来的32位的立即数)
       `ALU_OP_SLTI:// 有符号比较 rt <- rs < imm   rs中的值与扩展后的立即数imm比较 结果放入rt中
