@@ -9,35 +9,35 @@ module decode (
     input [31:0] _pcp4,  // 输入的pc + 4
     input [31:0] _inst,  // 输入的inst
     //**************************Hazard Unit***************************************
-    // execute阶段的写入使能�?�写入地�?、写入数�?
+    // execute阶段的写入使能�?�写入地�?、写入数�?
     input _exe_we,
     input [4:0] _exe_wa,
     input [31:0] _exe_wd,
-    // memory阶段的写入使能�?�写入地�?、写入数�?
+    // memory阶段的写入使能�?�写入地�?、写入数�?
     input _mem_we,
     input [4:0] _mem_wa,
     input [31:0] _mem_wd,
-    // writeback阶段的写入使能�?�写入地�?、写入数�?
+    // writeback阶段的写入使能�?�写入地�?、写入数�?
     input _writeback_we,
     input [4:0] _writeback_wa,
     input [31:0] _writeback_wd,
-    // 上面这些用于解决数据冲突时，不用做成reg缓存�?个周期�?�因为冲突发生在当前周期�?
+    // 上面这些用于解决数据冲突时，不用做成reg缓存�?个周期�?�因为冲突发生在当前周期�?
     //**************************Hazard Unit***************************************
 
     output [31:0] rd1,  // 从寄存器堆输出的第一个data
     output [31:0] rd2,  // 从寄存器堆输出的第二个data
-    output [31:0] imm_ext, // 扩展后的imm，在execute里�?�择到底用imm还是rd2放到alu�?
-    output [3:0] alu_op,  // alu做什么运�?
+    output [31:0] imm_ext, // 扩展后的imm，在execute里�?�择到底用imm还是rd2放到alu�?
+    output [3:0] alu_op,  // alu做什么运�?
     output alu_src,  // 选择哪个是alu的操作数
     output reg [31:0] pcp8,  // 输出的pc + 8，用于link写入$31
 
     // output [4:0] sa, // alu的偏移量
-    output reg_we,  // 写入reg的使�?
-    output mem_we,  // 写入内存的使�?
+    output reg_we,  // 写入reg的使�?
+    output mem_we,  // 写入内存的使�?
     // output        link, // 把pc_next写入$31，其实br unit可以放在decode里，不用等alu
-    // DELETED output [2:0] jumpOp,  // 给br unit，告诉它走哪种跳�?
-    //output [1:0] extend_op,  // 符号扩展怎么扩展，据说有好几�?
-    output [4:0] reg_write_addr,  // 写回哪个寄存�?
+    // DELETED output [2:0] jumpOp,  // 给br unit，告诉它走哪种跳�?
+    //output [1:0] extend_op,  // 符号扩展怎么扩展，据说有好几�?
+    output [4:0] reg_write_addr,  // 写回哪个寄存�?
     output [2:0] reg_wd_mux,  // 写回的数据来源，选哪条路
 
     // To instruction fetch
@@ -50,10 +50,14 @@ module decode (
   wire [1:0] forward1, forward2;
 
   reg [31:0] inst;
-  reg wb_we;
-  reg [31:0] wb_wd;
-  reg [4:0] wb_wa;
+  // reg wb_we;
+  // reg [31:0] wb_wd;
+  // reg [4:0] wb_wa;
   reg [5:0] prev_op;
+
+  wire wb_we = _writeback_we;
+  wire [31:0] wb_wd = _writeback_wd;
+  wire [4:0] wb_wa = _writeback_wa;
 
   wire [4:0] rs = inst[25:21];
   wire [4:0] rt = inst[20:16];
@@ -65,25 +69,25 @@ module decode (
       inst <= 32'b0;
       pcp8 <= 32'b0;
       pcp4 <= 32'b0;
-      wb_we <= 1'b0;
+      // wb_we <= 1'b0; 
       prev_op <= 6'b0;
     end else if (stall) begin
-      // 用上�?周期的�??
+      // 用上�?周期的�??
       inst <= inst;
       pcp4 <= pcp4;
       pcp8 <= pcp8;
-      wb_we <= wb_we;
-      wb_wd <= wb_wd;
-      wb_wa <= wb_wa;
-      // stall完了，prev op就不应该再是让它stall的load�?
+      // wb_we <= wb_we;
+      // wb_wd <= wb_wd;
+      // wb_wa <= wb_wa;
+      // stall完了，prev op就不应该再是让它stall的load�?
       prev_op <= 6'b0;
     end else begin
       inst <= _inst;
       pcp4 <= _pcp4;
       pcp8 <= _pcp4 + 4;
-      wb_we <= _writeback_we;
-      wb_wd <= _writeback_wd;
-      wb_wa <= _writeback_wa;
+      // wb_we <= _writeback_we;
+      // wb_wd <= _writeback_wd;
+      // wb_wa <= _writeback_wa;
       prev_op <= inst[31:26];
     end
   end
@@ -110,7 +114,7 @@ module decode (
   assign linkable = (jump && (write_reg_dst == `WRITE_REG_DST_31));
   assign reg_we = cu_reg_we || linkable;
 
-  // 通过write_reg_dst获取寄存器地�?
+  // 通过write_reg_dst获取寄存器地�?
   // `WRITE_REG_DST_RD: RD
   // `WRITE_REG_DST_RT: RT
   // `WRITE_REG_DST_31: $31
