@@ -93,3 +93,4 @@ napalm.sim/sim_1/behav/xsim/xsim.dir/testbench_behav/obj/xsim_1.c
 napalm.sim/sim_1/behav/xsim/webtalk_20316.backup.jou
 napalm.sim/sim_1/behav/xsim/webtalk.jou
 napalm.sim/sim_1/behav/xsim/testbench.tcl
+*.wcfg
