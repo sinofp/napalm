@@ -33,8 +33,8 @@ module execute (
     output reg mem_we  // （传递）这条指令要不要写入data mem
 );
   reg [31:0] rd1;
-  reg [3:0] alu_op;
-  reg [1:0] alu_src;
+  reg [ 3:0] alu_op;
+  reg [ 1:0] alu_src;
 
   always @(posedge clk) begin
     if (rst | _stall) begin

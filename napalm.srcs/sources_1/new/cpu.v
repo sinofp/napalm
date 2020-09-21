@@ -26,8 +26,8 @@ module cpu (
   wire [31:0] de_rd1, de_rd2;
   wire [31:0] de_imm_ext;
 
-  wire [3:0] de_alu_op;
-  wire [1:0] de_alu_src;
+  wire [ 3:0] de_alu_op;
+  wire [ 1:0] de_alu_src;
   wire [31:0] de_pcp8;
 
   wire de_reg_we, de_mem_we;
