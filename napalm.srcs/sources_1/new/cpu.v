@@ -27,7 +27,7 @@ module cpu (
   wire [31:0] de_imm_ext;
 
   wire [3:0] de_alu_op;
-  wire de_alu_src;
+  wire [1:0] de_alu_src;
   wire [31:0] de_pcp8;
 
   wire de_reg_we, de_mem_we;
@@ -65,13 +65,13 @@ module cpu (
       //**************************Hazard Unit**************************************  
       .rd1(de_rd1),  // 从寄存器堆输出的第一个data
       .rd2(de_rd2),  // 从寄存器堆输出的第二个data
-      .imm_ext(de_imm_ext), // 扩展后的imm，在execute里�?�择到底用imm还是rd2放到alu�?
-      .alu_op(de_alu_op),  // alu做什么运�?
+      .imm_ext(de_imm_ext), // 扩展后的imm，在execute里�?�择到底用imm还是rd2放到alu�?
+      .alu_op(de_alu_op),  // alu做什么运�?
       .alu_src(de_alu_src),  // 选择哪个是alu的操作数
       .pcp8(de_pcp8),  // 输出的pc + 8，用于link写入$31
-      .reg_we(de_reg_we),  // 写入reg的使�?
-      .mem_we(de_mem_we),  // 写入内存的使�?
-      .reg_write_addr(de_reg_wa),  // 写回哪个寄存�?
+      .reg_we(de_reg_we),  // 写入reg的使�?
+      .mem_we(de_mem_we),  // 写入内存的使�?
+      .reg_write_addr(de_reg_wa),  // 写回哪个寄存�?
       .reg_wd_mux(de_wd_mux),  // 写回的数据来源，选哪条路
       // To instruction fetch
       .pc_jump(df_pc_jump),
@@ -84,7 +84,7 @@ module cpu (
   //wire [2:0] em_wb_dst_mux;
   //wire [31:0] em_mem_wd;
 
-  wire overflow;  // 这玩意，现在不输出给任何�?
+  wire overflow;  // 这玩意，现在不输出给任何�?
 
   wire em_reg_we, em_mem_we;
   wire [ 4:0] em_reg_wa;
@@ -104,18 +104,18 @@ module cpu (
       ._rd2(de_rd2),
       ._imm_ext(de_imm_ext),
       ._pcp8(de_pcp8),
-      ._reg_write_addr(de_reg_wa),  // 寄存器写入地�?，在decode中已被计�?
-      ._op_code(de_opcode),  // 操作码，用于lb等访存操�?
-      ._reg_wd_mux(de_wd_mux),  // reg写回的数据来�?
-      ._reg_we(de_reg_we),  // 新来的指令要不要写入寄存�?
+      ._reg_write_addr(de_reg_wa),  // 寄存器写入地�?，在decode中已被计�?
+      ._op_code(de_opcode),  // 操作码，用于lb等访存操�?
+      ._reg_wd_mux(de_wd_mux),  // reg写回的数据来�?
+      ._reg_we(de_reg_we),  // 新来的指令要不要写入寄存�?
       ._mem_we(de_mem_we),  // 新来的指令要不要写入data mem
       ._stall(stall),
-      .reg_write_addr(em_reg_wa),  // （传递）寄存器写入地�?，在decode中已被计�?
+      .reg_write_addr(em_reg_wa),  // （传递）寄存器写入地�?，在decode中已被计�?
       .imm_ext(em_imm_ext),  // （传递）扩张的立即数
-      .alu_res(em_alu_res),  // alu运算结果。支持乘法除法的话，应该改成64�?
+      .alu_res(em_alu_res),  // alu运算结果。支持乘法除法的话，应该改成64�?
       .rd2(em_rd2),  // （传递）可能给reg_wd
-      .reg_wd_mux(em_wd_mux),  // （传递）reg写回的数据来�?
-      .op_code(em_opcode),  // （传递）操作码，用于lb等访存操�?
+      .reg_wd_mux(em_wd_mux),  // （传递）reg写回的数据来�?
+      .op_code(em_opcode),  // （传递）操作码，用于lb等访存操�?
       .pcp8(em_pcp8),
       .overflow(overflow),
       .reg_we(em_reg_we),
@@ -156,15 +156,15 @@ module cpu (
   writeback WRITEBACK (
       .clk(clk),
       .rst(rst),
-      ._mem_data(mw_mem_data),  // 从内存中读出的数�?
-      ._alu_res(mw_alu_res),  // 从alu得到的结�?
+      ._mem_data(mw_mem_data),  // 从内存中读出的数�?
+      ._alu_res(mw_alu_res),  // 从alu得到的结�?
       ._imm_ext(mw_imm_ext),  // lui的立即数
       ._pcp8(mw_pcp8),  // 跳转的link addr
       ._reg_wd_mux(mw_wd_mux),  // cu的srcReg，用上面哪个数据写回
-      ._reg_write_addr(mw_reg_wa),  // 写到哪个寄存�?
+      ._reg_write_addr(mw_reg_wa),  // 写到哪个寄存�?
       ._reg_we(mw_reg_we),  // write enable
       .reg_we(wd_we),
-      .reg_write_addr(wd_wa),  // 同上，但慢一个周�?
+      .reg_write_addr(wd_wa),  // 同上，但慢一个周�?
       .reg_write_data(wd_wd)
   );
 

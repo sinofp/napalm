@@ -28,7 +28,7 @@ module decode (
     output [31:0] rd2,  // 从寄存器堆输出的第二个data
     output [31:0] imm_ext, // 扩展后的imm，在execute里�?�择到底用imm还是rd2放到alu�?
     output [3:0] alu_op,  // alu做什么运�?
-    output alu_src,  // 选择哪个是alu的操作数
+    output [1:0] alu_src,  // 选择哪个是alu的操作数
     output reg [31:0] pcp8,  // 输出的pc + 8，用于link写入$31
 
     // output [4:0] sa, // alu的偏移量
