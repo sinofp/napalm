@@ -1,8 +1,15 @@
 {
 	"folders": [
 		{
+			"name": "src",
 			"path": "napalm.srcs\\sources_1\\new"
+		},
+		{
+			"name": "sim",
+			"path": "napalm.srcs\\sim_1\\new"
+		},
+		{
+			"path": "test"
 		}
-	],
-	"settings": {}
+	]
 }

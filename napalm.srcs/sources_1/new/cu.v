@@ -2,27 +2,23 @@
 `include "def.vh"
 
 module cu (
-    input [31:0] inst,
-    input zeroRes,  // for beq
-    input greatThanZero,  // for BLEZ (!greatThanZero <= 0)
-    input lessThanZero,  // for BGEZ (!lessThanZero >= 0)
+    input [31:0] _inst,
 
-    output [2:0] jumpOp,  // For NPC
-    output [1:0] extendOp,  // For Signal Extend
-    output regWriteEn,  // For Register File
-    output memWriteEn,  // For Data Memory
-    output [3:0] aluOp,  // For ALU
-    output [1:0] writeRegDst,  // FOR MUX before register heap
-    output srcAlu,  // FOR MUX before ALU
-    output [2:0] srcReg,  // FOR MUX after Data Memory
+    //output [1:0] extend_op,                 // For Signal Extend
+    output       reg_we,  // For Register File
+    output       mem_we,  // For Data Memory
+    output [3:0] alu_op,  // For ALU
+    output [1:0] write_reg_dst,  // FOR MUX before register heap
+    output [1:0] alu_src,  // FOR MUX before ALU
+    output [2:0] reg_write_data_mux,  // FOR MUX after Data Memory
 
-    output saveRetAddrEn  // For saving PC + 8 into $31
-    // todo
+    output [`BR_OP_LEN - 1 : 0] br_op,  // for br_unit
+    output [              31:0] imm_ext  // imm after extension
 );
 
-  wire [5:0] opcode = inst[31:26];
-  wire [5:0] rFunc = inst[5:0];
-  wire [4:0] rt = inst[20:16];
+  wire [5:0] opcode = _inst[31:26];
+  wire [5:0] rFunc = _inst[5:0];
+  wire [4:0] rt = _inst[20:16];
 
   wire rTemp;
   // R
@@ -32,12 +28,19 @@ module cu (
   // J
   wire j_inst, jal_inst;
   // branch
-  wire bgez_inst, bgezal_inst, bltz_inst, bltzal_inst;
+  wire bgez_inst, bgezal_inst, bltz_inst, bltzal_inst, branch_inst;
   // NOP
   wire nop_inst;
 
+
+  // to extend imm26 for J
+  //assign imm26Ext = {6'b0, inst[25:0]};
+
+  // for shift imm
+  // assign sa = inst[10:6];
+
   // for noop
-  assign nop_inst = (inst == 32'b0) ? 1 : 0;
+  assign nop_inst = (_inst == 32'b0) ? 1 : 0;
 
   // for R
   assign rTemp = (opcode == `R_OP) ? 1 : 0;
@@ -62,7 +65,7 @@ module cu (
   assign mfhi_inst = (rTemp && rFunc == `MFHI_FUNC) ? 1 : 0;
   assign mflo_inst = (rTemp && rFunc == `MFLO_FUNC) ? 1 : 0;
   assign mult_inst = (rTemp && rFunc == `MULT_FUNC) ? 1 : 0;
-  assign multu_inst = (rTemp && rFunc == `MULTI_FUNC) ? 1 : 0;
+  assign multu_inst = (rTemp && rFunc == `MULTU_FUNC) ? 1 : 0;
 
   // for I
   assign addi_inst = (opcode == `ADDI_OP) ? 1 : 0;
@@ -92,80 +95,53 @@ module cu (
   assign j_inst = (opcode == `J_OP) ? 1 : 0;
   assign jal_inst = (opcode == `JAL_OP) ? 1 : 0;
 
-  // for link
-  assign saveRetAddrEn = (  (bgezal_inst && !lessThanZero)||
-						  (bltzal_inst &&  lessThanZero)    ) ? 1'b1 : 1'b0 ;	// bgezal
-
   /* Control Signals */
 
-  // jumpOp
-  assign jumpOp = (add_inst || addi_inst || addiu_inst|| addu_inst|| and_inst|| andi_inst|| lb_inst  || lui_inst || 
-		  		  lw_inst || nop_inst  || or_inst   || ori_inst || sb_inst || sll_inst || sllv_inst|| slt_inst || 
-				slti_inst || sltiu_inst|| sltu_inst || sra_inst || srl_inst|| srlv_inst|| sub_inst || subu_inst||
-				  sw_inst || xor_inst  || nor_inst  || xori_inst|| div_inst|| divu_inst|| mfhi_inst|| mflo_inst|| 
-				mult_inst || multu_inst) ? `JUMP_OP_P4 :		// pc + 4
+  // // extendOp
+  // assign extend_op = (lui_inst) ? `EXTEND_LEFT16 :
+  // 		  (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? `EXTEND_S_IMM32 :
+  // 		  (andi_inst|| ori_inst  || xori_inst) ? `EXTEND_U_OFF32 :
+  //         (sll_inst || sra_inst  || srl_inst ) ? 
+  // 		  `EXTEND_DEFAULT;
 
-				(beq_inst && !zeroRes) ? `JUMP_OP_P4 :			// beq
-				(beq_inst && zeroRes) ? `JUMP_OP_OFF :		 
-
-				(bne_inst && !zeroRes) ? `JUMP_OP_OFF :			// bne
-				(bne_inst && zeroRes) ? `JUMP_OP_P4 :
-
-				(jr_inst) ? `JUMP_OP_RS :						// jr
-
-				(j_inst|| jal_inst) ? `JUMP_OP_DST :			// j、jal 
-
-				((bgez_inst|| bgezal_inst) && !lessThanZero) ? `JUMP_OP_OFF :	// bgez、bgezal
-				((bgez_inst|| bgezal_inst) && lessThanZero) ? `JUMP_OP_P4 :
-
-				(bgtz_inst && greatThanZero) ? `JUMP_OP_OFF :	// bgtz
-				(bgtz_inst && !greatThanZero) ? `JUMP_OP_P4 :
-
-				(blez_inst && !greatThanZero) ? `JUMP_OP_OFF :	// blez
-				(blez_inst && greatThanZero) ? `JUMP_OP_P4 :
-
-				((bltz_inst|| bltzal_inst) && lessThanZero) ? `JUMP_OP_OFF :	// bltz、bltzal
-				((bltz_inst|| bltzal_inst) && !lessThanZero) ? `JUMP_OP_P4 :
-				`JUMP_OP_DEFAULT;
-
-  // extendOp
-  assign extendOp = (lui_inst) ? `EXTEND_LEFT16 :
-				  (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? `EXTEND_S_IMM32 :
-				  (andi_inst|| ori_inst  || xori_inst) ? `EXTEND_U_OFF32 :
-				  `EXTEND_DEFAULT;
+  assign imm_ext = (lui_inst) ? {_inst[15:0], 16'b0} :
+                   (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? {{16{_inst[15]}}, _inst[15:0]} :
+                   (andi_inst|| ori_inst  || xori_inst) ? {16'b0, _inst[15:0]} :
+                   (sll_inst || sra_inst  || srl_inst ) ? {27'b0, _inst[10:6]} :
+                   32'b0;
 
   // Register Write Enable
-  assign regWriteEn = (add_inst || addi_inst|| addiu_inst|| addu_inst|| and_inst || andi_inst|| jal_inst || 
-					 lb_inst  || lui_inst || lw_inst   || or_inst  || ori_inst || sll_inst || sllv_inst|| 
-					 slt_inst || slti_inst|| sltiu_inst|| sltu_inst|| sra_inst || srl_inst || srlv_inst|| 
-					 sub_inst || subu_inst|| xor_inst  || nor_inst || xori_inst|| div_inst || divu_inst|| 
-					 mfhi_inst|| mflo_inst|| mult_inst || multu_inst ) ? 1'b1 : 1'b0;
+  assign reg_we = (add_inst || addi_inst|| addiu_inst|| addu_inst|| and_inst || andi_inst|| jal_inst || 
+					          lb_inst  || lui_inst || lw_inst   || or_inst  || ori_inst || sll_inst || sllv_inst|| 
+					          slt_inst || slti_inst|| sltiu_inst|| sltu_inst|| sra_inst || srl_inst || srlv_inst|| 
+					          sub_inst || subu_inst|| xor_inst  || nor_inst || xori_inst|| div_inst || divu_inst|| 
+					          mfhi_inst|| mflo_inst|| mult_inst || multu_inst ) ? 1'b1 : 1'b0;
 
   // Memory Write Enable
-  assign memWriteEn = (sb_inst || sw_inst) ? 1'b1 : 1'b0;
+  assign mem_we = (sb_inst || sw_inst) ? 1'b1 : 1'b0;
 
   // ALU operator
-  assign aluOp = (add_inst|| addi_inst|| addiu_inst|| addu_inst|| lb_inst|| lw_inst|| sb_inst|| sw_inst) ? `ALU_OP_PLUS :
-			   (and_inst|| andi_inst) ? `ALU_OP_AND :
-			   (div_inst|| divu_inst) ? `ALU_OP_DIV :
-			   (mult_inst|| multu_inst) ? `ALU_OP_MULT :
-			   (or_inst|| ori_inst) ? `ALU_OP_OR :
-			   (sll_inst) ? `ALU_OP_SLL :
-			   (slt_inst|| slti_inst|| sltu_inst|| sltiu_inst) ? `ALU_OP_SLT :
-			   (sra_inst) ? `ALU_OP_SRA :
-			   (srl_inst) ? `ALU_OP_SRL :
-			   (srlv_inst) ? `ALU_OP_SLRV :
-			   (sub_inst|| subu_inst|| beq_inst) ? `ALU_OP_MINUS :
-			   (xor_inst|| xori_inst) ? `ALU_OP_XOR :
-			   (nor_inst) ? `ALU_OP_NOR :
-			   (sllv_inst) ? `ALU_OP_SLLV :
-			   `ALU_OP_DEFAULT ;
+  assign alu_op = (add_inst|| addi_inst|| addiu_inst|| addu_inst|| lb_inst|| lw_inst|| sb_inst|| sw_inst) ? `ALU_OP_PLUS :
+			            (and_inst|| andi_inst) ? `ALU_OP_AND :
+			            (div_inst|| divu_inst) ? `ALU_OP_DIV :
+			            (mult_inst|| multu_inst) ? `ALU_OP_MULT :
+			            (or_inst|| ori_inst) ? `ALU_OP_OR :
+			            (sll_inst) ? `ALU_OP_SLL :
+			            (slt_inst|| slti_inst|| sltu_inst|| sltiu_inst) ? `ALU_OP_SLT :
+			            (sra_inst) ? `ALU_OP_SRA :
+			            (srl_inst) ? `ALU_OP_SRL :
+			            (srlv_inst) ? `ALU_OP_SRLV :
+			            (sub_inst|| subu_inst|| beq_inst) ? `ALU_OP_MINUS :
+			            (xor_inst|| xori_inst) ? `ALU_OP_XOR :
+			            (nor_inst) ? `ALU_OP_NOR :
+			            (sllv_inst) ? `ALU_OP_SLLV :
+			            `ALU_OP_DEFAULT ;
 
   // Which reg to write into
-  assign writeRegDst = // RD
+  assign write_reg_dst = // RD
 					 (add_inst || addu_inst || and_inst|| mfhi_inst|| mflo_inst|| or_inst|| 
 					  sll_inst || sllv_inst || slt_inst|| sltu_inst|| sra_inst|| srl_inst|| 
-					  srlv_inst|| sub_inst  || subu_inst|| xor_inst) ? `WRITE_REG_DST_RD :
+					  srlv_inst|| sub_inst  || subu_inst|| xor_inst || nor_inst) ? `WRITE_REG_DST_RD :
 					 // RT
 					 (addi_inst|| addiu_inst|| andi_inst|| lb_inst|| lui_inst|| lw_inst|| 
 					  ori_inst || xori_inst) ? `WRITE_REG_DST_RT :
@@ -173,18 +149,29 @@ module cu (
 					 (bgezal_inst|| bltzal_inst|| jal_inst) ? `WRITE_REG_DST_31 :
 					 `WRITE_REG_DST_DEFAULT;
 
-  assign srcAlu = (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| 
-				 lw_inst  || sb_inst   ||andi_inst || ori_inst  || xori_inst) ? `ALU_SRC_EXTEND :
-				 `ALU_SRC_DEFAULT;
+  assign alu_src = (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| 
+				            lw_inst  || sb_inst   || sw_inst  ||andi_inst || ori_inst  || xori_inst) ? `ALU_SRC_EXTEND :
+                    (sll_inst || srl_inst || sra_inst) ? `ALU_SRC_SHAMT :
+				            `ALU_SRC_DEFAULT;
 
-  assign srcReg = (lui_inst) ? `SRC_WRITE_REG_IMM :	
-				(addi_inst|| addiu_inst|| andi_inst|| sltiu_inst|| ori_inst|| xori_inst||
-				 add_inst || addu_inst || sub_inst || subu_inst || slt_inst|| sltu_inst|| 
-				 and_inst || or_inst   || nor_inst || xor_inst  || sll_inst|| srl_inst || 
-				 sra_inst || sllv_inst || srlv_inst|| srav_inst) ? `SRC_WRITE_REG_ALU:
-				 (lw_inst) ? `SRC_WRITE_REG_MEM :
-				 (jalr_inst|| jal_inst) ? `SRC_WRITE_REG_JDST :
-				 `SRC_WRITE_REG_DEFAULT;
+  assign reg_write_data_mux = (lui_inst) ? `SRC_WRITE_REG_IMM :	
+				                      (addi_inst|| addiu_inst|| andi_inst|| sltiu_inst|| ori_inst|| xori_inst||
+				                       add_inst || addu_inst || sub_inst || subu_inst || slt_inst|| sltu_inst|| 
+				                       and_inst || or_inst   || nor_inst || xor_inst  || sll_inst|| srl_inst || 
+				                       sra_inst || sllv_inst || srlv_inst) ? `SRC_WRITE_REG_ALU:
+				                      (lw_inst | lb_inst) ? `SRC_WRITE_REG_MEM :
+				                      (jal_inst) ? `SRC_WRITE_REG_JDST :
+				                      `SRC_WRITE_REG_DEFAULT ;
+
+  assign br_op = (beq_inst) ? `BR_OP_EQUAL :
+  				       (bgez_inst || bgezal_inst) ? `BR_OP_GREATER_EQ :
+  				       (bgtz_inst) ? `BR_OP_GREATER :
+  			         (blez_inst) ? `BR_OP_LESS_EQ :
+  				       (bltz_inst || bltzal_inst) ? `BR_OP_LESS :
+  				       (bne_inst) ? `BR_OP_NOT_EQUAL :
+  				       (j_inst || jal_inst) ? `BR_OP_DIRECTJUMP :
+                 (jr_inst) ? `BR_OP_REG :
+  				       `BR_OP_DEFAULT;
 
   // todo
 endmodule
