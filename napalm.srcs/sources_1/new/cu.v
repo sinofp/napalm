@@ -158,7 +158,7 @@ module cu (
 				                       add_inst || addu_inst || sub_inst || subu_inst || slt_inst|| sltu_inst|| 
 				                       and_inst || or_inst   || nor_inst || xor_inst  || sll_inst|| srl_inst || 
 				                       sra_inst || sllv_inst || srlv_inst) ? `SRC_WRITE_REG_ALU:
-				                      (lw_inst) ? `SRC_WRITE_REG_MEM :
+				                      (lw_inst | lb_inst) ? `SRC_WRITE_REG_MEM :
 				                      (jal_inst) ? `SRC_WRITE_REG_JDST :
 				                      `SRC_WRITE_REG_DEFAULT ;
 
