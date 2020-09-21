@@ -18,8 +18,8 @@ module alu (
   //assign hi = alu_hi[31:0];//for DIV, MULT
   //assign lo = alu_lo[31:0];//32 bits
 
-  wire [5:0] _sa;
-  assign _sa = _num2[5:0];
+  wire [4:0] _sa;
+  assign _sa = _num1[4:0];
   always @(*) begin
     case (_alu_op)
       `ALU_OP_PLUS:// +
@@ -120,9 +120,9 @@ module alu (
       `ALU_OP_OR:// |
             alu_reg <= _num1 | _num2;
       `ALU_OP_SLL:// <<
-            alu_reg <= _num1 << _sa;// logic
+            alu_reg <= _num2 << _sa;// logic
       `ALU_OP_SLLV:// shift left logical variable
-            alu_reg <= _num2 << _num1[4:0];// logic
+            alu_reg <= _num2 << _sa;// logic
       `ALU_OP_SLT:// set on less than
             alu_reg <= (_num1 < _num2) ? 1 : 0;
       `ALU_OP_SRA:// >>
@@ -130,7 +130,7 @@ module alu (
       `ALU_OP_SRL:// >>
             alu_reg <= _num2 >> _sa;// logic
       `ALU_OP_SRLV:// shift right logical variable
-            alu_reg <= _num2 << _num1[4:0];// logic
+            alu_reg <= _num2 >> _sa;// logic
       `ALU_OP_MINUS:// -
         begin
         alu_reg <= _num1 - _num2;

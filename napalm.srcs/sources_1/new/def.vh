@@ -71,8 +71,9 @@
 `define WRITE_MEM_YES 		1'b1 				// OK to write into mem
 
 // Source operand of ALU input
-`define ALU_SRC_DEFAULT 	1'b0 				// from register
-`define ALU_SRC_EXTEND 		1'b1 				// from imm after extension
+`define ALU_SRC_DEFAULT 	2'b00 				// from register
+`define ALU_SRC_EXTEND 		2'b01 				// from imm after extension
+`define ALU_SRC_SHAMT       2'b11
 
 // Which dst reg to write into
 `define WRITE_REG_DST_DEFAULT 	2'b00 			// Default

@@ -9,7 +9,7 @@ module cu (
     output       mem_we,  // For Data Memory
     output [3:0] alu_op,  // For ALU
     output [1:0] write_reg_dst,  // FOR MUX before register heap
-    output       alu_src,  // FOR MUX before ALU
+    output [1:0] alu_src,  // FOR MUX before ALU
     output [2:0] reg_write_data_mux,  // FOR MUX after Data Memory
 
     output [`BR_OP_LEN - 1 : 0] br_op,  // for br_unit
@@ -141,7 +141,7 @@ module cu (
   assign write_reg_dst = // RD
 					 (add_inst || addu_inst || and_inst|| mfhi_inst|| mflo_inst|| or_inst|| 
 					  sll_inst || sllv_inst || slt_inst|| sltu_inst|| sra_inst|| srl_inst|| 
-					  srlv_inst|| sub_inst  || subu_inst|| xor_inst) ? `WRITE_REG_DST_RD :
+					  srlv_inst|| sub_inst  || subu_inst|| xor_inst || nor_inst) ? `WRITE_REG_DST_RD :
 					 // RT
 					 (addi_inst|| addiu_inst|| andi_inst|| lb_inst|| lui_inst|| lw_inst|| 
 					  ori_inst || xori_inst) ? `WRITE_REG_DST_RT :
@@ -151,6 +151,7 @@ module cu (
 
   assign alu_src = (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| 
 				            lw_inst  || sb_inst   || sw_inst  ||andi_inst || ori_inst  || xori_inst) ? `ALU_SRC_EXTEND :
+                    (sll_inst || srl_inst || sra_inst) ? `ALU_SRC_SHAMT :
 				            `ALU_SRC_DEFAULT;
 
   assign reg_write_data_mux = (lui_inst) ? `SRC_WRITE_REG_IMM :	
