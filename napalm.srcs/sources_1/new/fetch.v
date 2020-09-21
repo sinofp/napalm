@@ -19,7 +19,7 @@ module fetch (
     if (rst) begin
       jump <= 0;
     end else if (_stall) begin
-      // 用上�?周期的�??
+      // 用上�?周期的�??
       pc_jump <= pc_jump;
       jump <= jump;
     end else begin
@@ -32,7 +32,7 @@ module fetch (
       .clk(clk),
       .rst(rst),
       .pc_now(pc_now),
-      .pc_next(jump ? pc_jump : pcp4)
+      .pc_next(_stall? pc_now: jump ? pc_jump : pcp4)
   );
 
   inst_mem INST_MEM (
