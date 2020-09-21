@@ -141,7 +141,7 @@ module cu (
   assign write_reg_dst = // RD
 					 (add_inst || addu_inst || and_inst|| mfhi_inst|| mflo_inst|| or_inst|| 
 					  sll_inst || sllv_inst || slt_inst|| sltu_inst|| sra_inst|| srl_inst|| 
-					  srlv_inst|| sub_inst  || subu_inst|| xor_inst) ? `WRITE_REG_DST_RD :
+					  srlv_inst|| sub_inst  || subu_inst|| xor_inst || nor_inst) ? `WRITE_REG_DST_RD :
 					 // RT
 					 (addi_inst|| addiu_inst|| andi_inst|| lb_inst|| lui_inst|| lw_inst|| 
 					  ori_inst || xori_inst) ? `WRITE_REG_DST_RT :

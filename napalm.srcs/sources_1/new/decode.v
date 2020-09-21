@@ -121,7 +121,7 @@ module decode (
   // `WRITE_REG_DST_DEFAULT: 
   assign reg_write_addr = (write_reg_dst == `WRITE_REG_DST_RD) ? rd :
   (write_reg_dst == `WRITE_REG_DST_RT) ? rt :
-  (write_reg_dst == `WRITE_REG_DST_31) ? 5'd31 : 5'd0;
+  (write_reg_dst == `WRITE_REG_DST_31) ? 5'd31 : 5'dx;
 
   wire [31:0] reg_rd1;
   wire [31:0] reg_rd2;
