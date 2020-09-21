@@ -150,7 +150,7 @@ module cu (
 					 `WRITE_REG_DST_DEFAULT;
 
   assign alu_src = (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| 
-				            lw_inst  || sb_inst   ||andi_inst || ori_inst  || xori_inst) ? `ALU_SRC_EXTEND :
+				            lw_inst  || sb_inst   || sw_inst  ||andi_inst || ori_inst  || xori_inst) ? `ALU_SRC_EXTEND :
 				            `ALU_SRC_DEFAULT;
 
   assign reg_write_data_mux = (lui_inst) ? `SRC_WRITE_REG_IMM :	
