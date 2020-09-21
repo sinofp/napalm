@@ -13,7 +13,8 @@ module cu (
     output [2:0] reg_write_data_mux,  // FOR MUX after Data Memory
 
     output [`BR_OP_LEN - 1 : 0] br_op,  // for br_unit
-    output [              31:0] imm_ext  // imm after extension
+    output [              31:0] imm_ext,  // imm after extension
+    output is_zero
 );
 
   wire [5:0] opcode = _inst[31:26];
@@ -171,6 +172,8 @@ module cu (
   				       (j_inst || jal_inst) ? `BR_OP_DIRECTJUMP :
                  (jr_inst) ? `BR_OP_REG :
   				       `BR_OP_DEFAULT;
+
+  assign isZero = (bgtz_inst || blez_inst || bgez_inst || bgezal_inst || bltz_inst || bltzal_inst);
 
   // todo
 endmodule
