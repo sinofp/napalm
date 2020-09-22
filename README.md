@@ -14,9 +14,9 @@
 | 12 bltz   |   IBR|     |
 | 13 bltzal |   IBR|     |
 | 14 bne    |   I  |     |
-| 15 j      |   J  |   1  |
-| 16 jal    |   J  |   1  |
-| 17 jr     |   R  |   1  |
+| 15 j      |   J  |     |
+| 16 jal    |   J  |     |
+| 17 jr     |   R  |     |
 | 18 lb     |   I  |     |
 | 19 lui    |   I  |     |
 | 20 lw     |   I  |     |
