@@ -12,22 +12,6 @@ module fetch (
   wire [31:0] pc_now;
   assign pcp4 = pc_now + 32'h4;
 
-  //reg [31:0] pc_jump;
-  //reg jump;
-
-  /*always @(posedge clk) begin
-    if (rst) begin
-      jump <= 0;
-    end else if (_stall) begin
-      // 用上�?周期的�??
-      pc_jump <= pc_jump;
-      jump <= jump;
-    end else begin
-      pc_jump <= _pc_jump;
-      jump <= _jump;
-    end
-  end*/
-
   pc PC (
       .clk(clk),
       .rst(rst),
