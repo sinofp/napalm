@@ -20,7 +20,7 @@ module data_mem (
     if (_we) begin
       mem[_addr+3] <= (_opcode == `LB_OP)? {8{_wd[7]}}: (_opcode == `LH_OP)? {8{_wd[15]}}: _wd[31:24];
       mem[_addr+2] <= (_opcode == `LB_OP)? {8{_wd[7]}}: (_opcode == `LH_OP)? {8{_wd[15]}}: _wd[23:16];
-      mem[_addr+1] <= (_opcode == `LB_OP)? {8{_wd[7]}}: _wd[15:8];
+      mem[_addr+1] <= (_opcode == `LB_OP) ? {8{_wd[7]}} : _wd[15:8];
       mem[_addr] <= _wd[7:0];
     end
   end
