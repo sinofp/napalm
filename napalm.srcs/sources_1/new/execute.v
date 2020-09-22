@@ -11,7 +11,6 @@ module execute (
     input [31:0] _imm_ext,  // 扩张的立即数
     input [31:0] _pcp8, // pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
     input [4:0] _reg_write_addr,  // 寄存器写入地�?，在decode中已被计�?
-    // DELETED input [4:0] sa,  // alu位移运算的偏移量
     input [5:0] _op_code,  // 操作码，用于lb等访存操�?
     input [2:0] _reg_wd_mux,  // reg写回的数据来�?
     input _reg_we,  // 新来的指令要不要写入寄存�?
@@ -24,10 +23,6 @@ module execute (
     output reg [2:0] reg_wd_mux,  // （传递）reg写回的数据来�?
     output reg [5:0] op_code,  // （传递）操作码，用于lb等访存操�?
     output reg [31:0] pcp8, // （传递）pc+4，现在br unit在执行阶段，但放回去就不用了。放回还有个前提，是前推单元也得提前到decode
-    // DELETED output [31:0] data_wd_e,  // 要写入存储器的话，写入什么内�?
-
-    // DELETED output [31:0] pc_jump,  // 跳转到的地址，br unit输出
-    // DELETED output jump,  // 这条指令是否跳转，br unit的输�?
     output overflow,  // addiu和addi的区�?
     output reg reg_we,  // （传递）这条指令要不要写入寄存器
     output reg mem_we  // （传递）这条指令要不要写入data mem
