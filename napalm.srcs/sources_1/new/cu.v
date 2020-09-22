@@ -13,7 +13,8 @@ module cu (
     output [2:0] reg_write_data_mux,  // FOR MUX after Data Memory
 
     output [`BR_OP_LEN - 1 : 0] br_op,  // for br_unit
-    output [              31:0] imm_ext  // imm after extension
+    output [              31:0] imm_ext,  // imm after extension
+    output                      is_zero
 );
 
   wire [5:0] opcode = _inst[31:26];
@@ -106,8 +107,10 @@ module cu (
 
   assign imm_ext = (lui_inst) ? {_inst[15:0], 16'b0} :
                    (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? {{16{_inst[15]}}, _inst[15:0]} :
-                   (andi_inst|| ori_inst  || xori_inst) ? {16'b0, _inst[15:0]} :
+                   (andi_inst|| ori_inst  || xori_inst || beq_inst || bne_inst || bgtz_inst 
+                   || blez_inst || bgez_inst || bgezal_inst || bltz_inst || bltzal_inst ) ? {16'b0, _inst[15:0]} :
                    (sll_inst || sra_inst  || srl_inst ) ? {27'b0, _inst[10:6]} :
+                   (j_inst || jal_inst) ? {6'b0, _inst[25:0]} : 
                    32'b0;
 
   // Register Write Enable
@@ -160,7 +163,7 @@ module cu (
 				                       and_inst || or_inst   || nor_inst || xor_inst  || sll_inst|| srl_inst || 
 				                       sra_inst || sllv_inst || srlv_inst) ? `SRC_WRITE_REG_ALU:
 				                      (lw_inst | lb_inst) ? `SRC_WRITE_REG_MEM :
-				                      (jal_inst) ? `SRC_WRITE_REG_JDST :
+				                      (bgezal_inst || jal_inst || bltzal_inst) ? `SRC_WRITE_REG_JDST :
 				                      `SRC_WRITE_REG_DEFAULT ;
 
   assign br_op = (beq_inst) ? `BR_OP_EQUAL :
@@ -172,6 +175,8 @@ module cu (
   				       (j_inst || jal_inst) ? `BR_OP_DIRECTJUMP :
                  (jr_inst) ? `BR_OP_REG :
   				       `BR_OP_DEFAULT;
+
+  assign is_zero = (bgtz_inst || blez_inst || bgez_inst || bgezal_inst || bltz_inst || bltzal_inst);
 
   // todo
 endmodule

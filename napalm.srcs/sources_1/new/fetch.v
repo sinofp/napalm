@@ -12,10 +12,10 @@ module fetch (
   wire [31:0] pc_now;
   assign pcp4 = pc_now + 32'h4;
 
-  reg [31:0] pc_jump;
-  reg jump;
+  //reg [31:0] pc_jump;
+  //reg jump;
 
-  always @(posedge clk) begin
+  /*always @(posedge clk) begin
     if (rst) begin
       jump <= 0;
     end else if (_stall) begin
@@ -26,13 +26,13 @@ module fetch (
       pc_jump <= _pc_jump;
       jump <= _jump;
     end
-  end
+  end*/
 
   pc PC (
       .clk(clk),
       .rst(rst),
       .pc_now(pc_now),
-      .pc_next(_stall ? pc_now : jump ? pc_jump : pcp4)
+      .pc_next(_stall ? pc_now : _jump ? _pc_jump : pcp4)
   );
 
   inst_mem INST_MEM (

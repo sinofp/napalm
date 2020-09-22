@@ -97,6 +97,7 @@ module decode (
   // cu_reg_we is not final reg_we. It should be or with linkable
   // linkable is (jump && (write_reg_dst == `WRITE_REG_DST_31))
   wire cu_reg_we;
+  wire is_zero;
   cu CU (
       ._inst(inst),
 
@@ -107,7 +108,8 @@ module decode (
       .alu_src(alu_src),
       .reg_write_data_mux(reg_wd_mux),
       .br_op(br_op),
-      .imm_ext(imm_ext)
+      .imm_ext(imm_ext),
+      .is_zero(is_zero)
   );
 
   wire linkable;
@@ -151,7 +153,8 @@ module decode (
       .pcp4(pcp4),
       .imm_ext(imm_ext),
       .jump(jump),
-      .pc_jump(pc_jump)
+      .pc_jump(pc_jump),
+      .is_zero(is_zero)
   );
 
   hazard_unit HAZARD_UNIT (

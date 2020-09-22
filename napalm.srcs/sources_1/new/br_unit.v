@@ -3,21 +3,31 @@
 
 module br_unit (
     input clk,
-    input [31:0] rd1,  // beq要比较的两个操作�?
+    input [31:0] rd1,  // beq要比较的两个操作�?
     input [31:0] rd2,
-    input [`BR_OP_LEN - 1 : 0] mode,  // 比较类型，或者直接跳转，或�?�不跳转
+    input is_zero,
+    input [`BR_OP_LEN - 1 : 0] mode,  // 比较类型，或者直接跳转，或�?�不跳转
     input [31:0] pcp4,  // pc + 4
-    input [31:0] imm_ext,  // TODO jump的target，应该传jump的偏�?
-    output [31:0] pc_jump,  // 如果要跳�?/分支，地�?应该是多�?
+    input [31:0] imm_ext,  // TODO jump的target，应该传jump的偏�?
+    output [31:0] pc_jump,  // 如果要跳�?/分支，地�?应该是多�?
     output jump  // 跳转不跳
 );
+  wire rd1IsZero;
+  assign rd1IsZero = rd1 == 32'b0;
+  wire zeroConditionSatisfied;
+  assign zeroConditionSatisfied = ((mode == `BR_OP_GREATER && rd1[31] == 0 && !rd1IsZero) ||
+  (mode == `BR_OP_GREATER_EQ && rd1[31] == 0) || 
+  (mode == `BR_OP_EQUAL && rd1IsZero) || 
+  (mode == `BR_OP_NOT_EQUAL && !rd1IsZero) || 
+  (mode == `BR_OP_LESS && rd1[31] == 1) || 
+(mode == `BR_OP_LESS_EQ && (rd1[31] == 1 || rd1IsZero))) ? 1 : 0;
   wire conditionSatisfied;
-  assign conditionSatisfied = ((mode == `BR_OP_GREATER && rd1 > rd2) ||
+  assign conditionSatisfied = is_zero ? zeroConditionSatisfied : (((mode == `BR_OP_GREATER && rd1 > rd2) ||
   (mode == `BR_OP_GREATER_EQ && rd1 >= rd2) || 
   (mode == `BR_OP_EQUAL && rd1 == rd2) || 
   (mode == `BR_OP_NOT_EQUAL && rd1 != rd2) || 
   (mode == `BR_OP_LESS && rd1 < rd2) || 
-(mode == `BR_OP_LESS_EQ && rd1 <= rd2)) ? 1 : 0;
+(mode == `BR_OP_LESS_EQ && rd1 <= rd2)) ? 1 : 0);
 
   assign jump = (mode == `BR_OP_DEFAULT) ? 0 : 
   (mode == `BR_OP_DIRECTJUMP || mode == `BR_OP_REG) ? 1 :
