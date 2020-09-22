@@ -14,7 +14,7 @@ module br_unit (
 );
   wire rd1IsZero;
   assign rd1IsZero = rd1 == 32'b0;
-  wire zeroConditionSatisfied; 
+  wire zeroConditionSatisfied;
   assign zeroConditionSatisfied = ((mode == `BR_OP_GREATER && rd1[31] == 0 && !rd1IsZero) ||
   (mode == `BR_OP_GREATER_EQ && rd1[31] == 0) || 
   (mode == `BR_OP_EQUAL && rd1IsZero) || 

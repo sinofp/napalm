@@ -14,7 +14,7 @@ module cu (
 
     output [`BR_OP_LEN - 1 : 0] br_op,  // for br_unit
     output [              31:0] imm_ext,  // imm after extension
-    output is_zero
+    output                      is_zero
 );
 
   wire [5:0] opcode = _inst[31:26];
