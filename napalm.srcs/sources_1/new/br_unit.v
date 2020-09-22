@@ -22,12 +22,12 @@ module br_unit (
   (mode == `BR_OP_LESS && rd1[31] == 1) || 
 (mode == `BR_OP_LESS_EQ && (rd1[31] == 1 || rd1IsZero))) ? 1 : 0;
   wire conditionSatisfied;
-  assign conditionSatisfied = ((mode == `BR_OP_GREATER && rd1 > rd2) ||
+  assign conditionSatisfied = is_zero ? zeroConditionSatisfied : (((mode == `BR_OP_GREATER && rd1 > rd2) ||
   (mode == `BR_OP_GREATER_EQ && rd1 >= rd2) || 
   (mode == `BR_OP_EQUAL && rd1 == rd2) || 
   (mode == `BR_OP_NOT_EQUAL && rd1 != rd2) || 
   (mode == `BR_OP_LESS && rd1 < rd2) || 
-(mode == `BR_OP_LESS_EQ && rd1 <= rd2)) ? 1 : 0;
+(mode == `BR_OP_LESS_EQ && rd1 <= rd2)) ? 1 : 0);
 
   assign jump = (mode == `BR_OP_DEFAULT) ? 0 : 
   (mode == `BR_OP_DIRECTJUMP || mode == `BR_OP_REG) ? 1 :
