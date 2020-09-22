@@ -33,7 +33,12 @@ module cpu (
   wire de_reg_we, de_mem_we;
   wire [4:0] de_reg_wa;
   wire [2:0] de_wd_mux;
+  //wire [2:0] de_jump_op;
+  //wire [1:0] de_extend_op;
+  //wire [1:0] de_wb_dst_mux;
+  //wire [2:0] de_wb_src_mux;
 
+  //wire [4:0] de_shamt;
 
   // for hazard unit
   wire ed_we, md_we, wd_we;
@@ -75,6 +80,9 @@ module cpu (
       .stall(stall)
   );
 
+  //wire [31:0] em_res;
+  //wire [2:0] em_wb_dst_mux;
+  //wire [31:0] em_mem_wd;
 
   wire overflow;  // 这玩意，现在不输出给任何�?
 
