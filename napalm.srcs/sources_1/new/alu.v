@@ -12,11 +12,7 @@ module alu (
 
 
   reg [32:0] alu_reg;
-  //reg[32:0] alu_hi;
-  //reg[32:0] alu_lo;
   assign alu_res = alu_reg[31:0];
-  //assign hi = alu_hi[31:0];//for DIV, MULT
-  //assign lo = alu_lo[31:0];//32 bits
 
   wire [4:0] _sa;
   assign _sa = _num1[4:0];
@@ -33,86 +29,7 @@ module alu (
       end
       `ALU_OP_AND://&
 			alu_reg <= _num1 & _num2;
-      /*	    `ALU_OP_DIV:// / %
-		begin
-			begin
-				alu_hi <= _num1 % _num2;
-			end
-			begin
-				alu_lo <= _num1 / _num2;
-			end
-				if(_num2 == 0)
-				begin
-					overflow <= 1'b1;
-				end
-				else if((_num1 >= 0) && (_num2 < 0) && (alu_hi > 0))
-				begin
-					overflow <= 1'b1;
-				end
-				else if((_num1 < 0) && (_num2 > 0) && (alu_hi >= 0))
-				begin
-					overflow <= 1'b1;
-				end
-				else if((_num1 <= 0) && (_num2 < 0) && (alu_hi < 0))
-				begin
-					overflow <= 1'b1;
-				end
-				else if((_num1 >= 0) && (_num2 > 0) && (alu_hi < 0))
-				begin
-					overflow <= 1'b1;
-				end
-				
-				else if((_num1 >= 0) && (_num2 < 0) && (alu_lo > 0))
-				begin
-					overflow <= 1'b1;
-				end
-				else if((_num1 < 0) && (_num2 > 0) && (alu_lo >= 0))
-				begin
-					overflow <= 1'b1;
-				end
-				else if((_num1 <= 0) && (_num2 < 0) && (alu_lo < 0))
-				begin
-					overflow <= 1'b1;
-				end
-				else if((_num1 >= 0) && (_num2 > 0) && (alu_lo < 0))
-				begin
-					overflow <= 1'b1;
-				end
-				
-				else
-				begin
-					overflow <= 1'b0;// no overflow
-				end
-		end
-        `ALU_OP_MULT://
-        begin
-            {alu_hi[31:0],alu_lo[31:0]} <= _num1 * _num2;
-            if((_num1 >= 0) && (_num2 < 0) && ({alu_hi[31:0],alu_lo[31:0]} > 0))
-            begin
-				overflow <= 1'b1;
-			end
-			
-			else if((_num1 < 0) && (_num2 >= 0) && ({alu_hi[31:0],alu_lo[31:0]} > 0))
-			begin
-				overflow <= 1'b1;
-			end
-			
-			else if((_num1 <= 0) && (_num2 <= 0) && ({alu_hi[31:0],alu_lo[31:0]} < 0))
-			begin
-				overflow <= 1'b1;
-			end
-			
-			else if((_num1 >= 0) && (_num2 >= 0) && ({alu_hi[31:0],alu_lo[31:0]} < 0))
-			begin
-				overflow <= 1'b1;
-			end
-			
-			else
-			begin
-				overflow <= 1'b0;// no overflow
-			end
-		end
-*/
+
 
       `ALU_OP_OR:// |
             alu_reg <= _num1 | _num2;
@@ -144,8 +61,6 @@ module alu (
       `ALU_OP_NOR:// nor
             alu_reg <= ~(_num1 | _num2);
 
-
-      //add SLTI,SLTIU
       //传入的_imm 为 (低16位扩展而来的32位的立即数)
       `ALU_OP_SLT:// 有符号比较 rt <- rs < imm   rs中的值与扩展后的立即数imm比较 结果放入rt中
             begin
@@ -178,12 +93,8 @@ module alu (
           end
         endcase
       end
-      //   `ALU_OP_SLTIU:// 无符号比较 rt <- rs < imm   rs中的值与扩展后的立即数imm比较 结果放入rt中
-      //         alu_reg <= (_num2 > _num1) ? 1 : 0;
       `ALU_OP_DEFAULT: alu_reg <= {_num2[31], _num2};
     endcase
   end
-
-
 
 endmodule
