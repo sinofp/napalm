@@ -4,7 +4,6 @@
 module cu (
     input [31:0] _inst,
 
-    //output [1:0] extend_op,                 // For Signal Extend
     output       reg_we,  // For Register File
     output       mem_we,  // For Data Memory
     output [3:0] alu_op,  // For ALU
@@ -32,13 +31,6 @@ module cu (
   wire bgez_inst, bgezal_inst, bltz_inst, bltzal_inst, branch_inst;
   // NOP
   wire nop_inst;
-
-
-  // to extend imm26 for J
-  //assign imm26Ext = {6'b0, inst[25:0]};
-
-  // for shift imm
-  // assign sa = inst[10:6];
 
   // for noop
   assign nop_inst = (_inst == 32'b0) ? 1 : 0;
@@ -97,13 +89,6 @@ module cu (
   assign jal_inst = (opcode == `JAL_OP) ? 1 : 0;
 
   /* Control Signals */
-
-  // // extendOp
-  // assign extend_op = (lui_inst) ? `EXTEND_LEFT16 :
-  // 		  (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? `EXTEND_S_IMM32 :
-  // 		  (andi_inst|| ori_inst  || xori_inst) ? `EXTEND_U_OFF32 :
-  //         (sll_inst || sra_inst  || srl_inst ) ? 
-  // 		  `EXTEND_DEFAULT;
 
   assign imm_ext = (lui_inst) ? {_inst[15:0], 16'b0} :
                    (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? {{16{_inst[15]}}, _inst[15:0]} :
@@ -179,5 +164,4 @@ module cu (
 
   assign is_zero = (bgtz_inst || blez_inst || bgez_inst || bgezal_inst || bltz_inst || bltzal_inst);
 
-  // todo
 endmodule
