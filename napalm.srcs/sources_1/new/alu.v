@@ -6,7 +6,6 @@ module alu (
     input [31:0] _num1,
     input [31:0] _num2,
     input [3:0] _alu_op,
-    //new	input [31:0] _imm,// for SLTI,SLTIU   传入这俩指令低16位扩展而来的32位的立即数imm是什么
     output [31:0] alu_res,
     output reg overflow
 );
@@ -121,7 +120,7 @@ module alu (
             alu_reg <= _num2 << _sa;// logic
       `ALU_OP_SLLV:// shift left logical variable
             alu_reg <= _num2 << _sa;// logic
-      `ALU_OP_SLT:// set on less than
+      `ALU_OP_SLTU:// set on less than
             alu_reg <= (_num1 < _num2) ? 1 : 0;
       `ALU_OP_SRA:// >>
             alu_reg <= _num2 >>> _sa;// arithmetic	alu_result = ($signed(operandB)) >>> operandA
@@ -146,12 +145,11 @@ module alu (
             alu_reg <= ~(_num1 | _num2);
 
 
-      /*new
 	  //add SLTI,SLTIU
 	  //传入的_imm 为 (低16位扩展而来的32位的立即数)
-      `ALU_OP_SLTI:// 有符号比较 rt <- rs < imm   rs中的值与扩展后的立即数imm比较 结果放入rt中
+      `ALU_OP_SLT:// 有符号比较 rt <- rs < imm   rs中的值与扩展后的立即数imm比较 结果放入rt中
             begin
-			case({_imm[31],_num1[31]})
+			case({_num2[31],_num1[31]})
 			2'b01:// _imm 为正 _num1 为负
 				begin
 				alu_reg <= 1;
@@ -162,7 +160,7 @@ module alu (
 				end
 			2'b00:// _imm,_num1 均为正,比较后31位
 				begin
-					if(_imm[30:0] >= _num1[30:0])
+					if(_num2[30:0] >= _num1[30:0])
 					begin
 						alu_reg <= 1;
 					end
@@ -173,7 +171,7 @@ module alu (
 				end
 			2'b11:// _imm,_num1 均为负,比较后31位
 				begin
-					if(_imm[30:0] >= _num1[30:0])
+					if(_num2[30:0] >= _num1[30:0])
 					begin
 						alu_reg <= 1;
 					end
@@ -184,9 +182,8 @@ module alu (
 				end
 			endcase
 			end
-      `ALU_OP_SLTIU:// 无符号比较 rt <- rs < imm   rs中的值与扩展后的立即数imm比较 结果放入rt中
-            alu_reg <= (_imm > _num1) ? 1 : 0;
-*/
+    //   `ALU_OP_SLTIU:// 无符号比较 rt <- rs < imm   rs中的值与扩展后的立即数imm比较 结果放入rt中
+    //         alu_reg <= (_num2 > _num1) ? 1 : 0;
       `ALU_OP_DEFAULT: alu_reg <= {_num2[31], _num2};
     endcase
   end

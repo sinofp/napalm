@@ -130,14 +130,15 @@ module cu (
 			            (mult_inst|| multu_inst) ? `ALU_OP_MULT :
 			            (or_inst|| ori_inst) ? `ALU_OP_OR :
 			            (sll_inst) ? `ALU_OP_SLL :
-			            (slt_inst|| slti_inst|| sltu_inst|| sltiu_inst) ? `ALU_OP_SLT :
+			            (slt_inst|| slti_inst) ? `ALU_OP_SLT :
 			            (sra_inst) ? `ALU_OP_SRA :
 			            (srl_inst) ? `ALU_OP_SRL :
 			            (srlv_inst) ? `ALU_OP_SRLV :
-			            (sub_inst|| subu_inst|| beq_inst) ? `ALU_OP_MINUS :
+			            (sub_inst|| subu_inst) ? `ALU_OP_MINUS :
 			            (xor_inst|| xori_inst) ? `ALU_OP_XOR :
 			            (nor_inst) ? `ALU_OP_NOR :
 			            (sllv_inst) ? `ALU_OP_SLLV :
+                  (sltu_inst|| sltiu_inst) ? `ALU_OP_SLTU :
 			            `ALU_OP_DEFAULT ;
 
   // Which reg to write into
@@ -147,7 +148,7 @@ module cu (
 					  srlv_inst|| sub_inst  || subu_inst|| xor_inst || nor_inst) ? `WRITE_REG_DST_RD :
 					 // RT
 					 (addi_inst|| addiu_inst|| andi_inst|| lb_inst|| lui_inst|| lw_inst|| 
-					  ori_inst || xori_inst) ? `WRITE_REG_DST_RT :
+					  ori_inst || xori_inst || slti_inst || sltiu_inst) ? `WRITE_REG_DST_RT :
 					 // $31
 					 (bgezal_inst|| bltzal_inst|| jal_inst) ? `WRITE_REG_DST_31 :
 					 `WRITE_REG_DST_DEFAULT;
@@ -161,7 +162,7 @@ module cu (
 				                      (addi_inst|| addiu_inst|| andi_inst|| sltiu_inst|| ori_inst|| xori_inst||
 				                       add_inst || addu_inst || sub_inst || subu_inst || slt_inst|| sltu_inst|| 
 				                       and_inst || or_inst   || nor_inst || xor_inst  || sll_inst|| srl_inst || 
-				                       sra_inst || sllv_inst || srlv_inst) ? `SRC_WRITE_REG_ALU:
+				                       sra_inst || sllv_inst || srlv_inst || slti_inst) ? `SRC_WRITE_REG_ALU:
 				                      (lw_inst | lb_inst) ? `SRC_WRITE_REG_MEM :
 				                      (bgezal_inst || jal_inst || bltzal_inst) ? `SRC_WRITE_REG_JDST :
 				                      `SRC_WRITE_REG_DEFAULT ;
