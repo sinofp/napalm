@@ -49,5 +49,5 @@ module hazard_unit (
 
   // 本该前推，但遇到了从内存中 load 数据的指令
   assign stall = ((forward1 == `FORWARD_EXE) | (forward2 == `FORWARD_EXE)) &
-                 ((prev_op == `LW_OP) | (prev_op == `LB_OP));
+                 ((prev_op == `LW_OP) | (prev_op == `LB_OP) | (prev_op == `LH_OP));
 endmodule  // hazard_unit

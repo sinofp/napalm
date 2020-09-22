@@ -24,7 +24,7 @@ module cu (
   // R
   wire add_inst, addu_inst, and_inst, jr_inst, or_inst, sll_inst, sllv_inst, slt_inst, sltu_inst, sra_inst, srl_inst, srlv_inst, sub_inst, subu_inst, xor_inst, nor_inst, div_inst, divu_inst, mfhi_inst, mflo_inst, mult_inst, multu_inst;
   // I
-  wire addi_inst, addiu_inst, andi_inst, beq_inst, bgtz_inst, blez_inst, bne_inst, lb_inst, lui_inst, lw_inst, ori_inst, sb_inst, slti_inst, sltiu_inst, sw_inst, xori_inst;
+  wire addi_inst, addiu_inst, andi_inst, beq_inst, bgtz_inst, blez_inst, bne_inst, lb_inst, lui_inst, lw_inst, ori_inst, sb_inst, slti_inst, sltiu_inst, sw_inst, xori_inst, lh_inst, sh_inst;
   // J
   wire j_inst, jal_inst;
   // branch
@@ -72,6 +72,8 @@ module cu (
   assign lb_inst = (opcode == `LB_OP) ? 1 : 0;
   assign lui_inst = (opcode == `LUI_OP) ? 1 : 0;
   assign lw_inst = (opcode == `LW_OP) ? 1 : 0;
+  assign lh_inst = (opcode == `LH_OP) ? 1 : 0;
+  assign sh_inst = (opcode == `SH_OP) ? 1 : 0;
   assign ori_inst = (opcode == `ORI_OP) ? 1 : 0;
   assign sb_inst = (opcode == `SB_OP) ? 1 : 0;
   assign slti_inst = (opcode == `SLTI_OP) ? 1 : 0;
@@ -91,7 +93,7 @@ module cu (
   /* Control Signals */
 
   assign imm_ext = (lui_inst) ? {_inst[15:0], 16'b0} :
-                   (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst) ? {{16{_inst[15]}}, _inst[15:0]} :
+                   (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lw_inst|| sb_inst || sw_inst || lh_inst || sh_inst) ? {{16{_inst[15]}}, _inst[15:0]} :
                    (andi_inst|| ori_inst  || xori_inst || beq_inst || bne_inst || bgtz_inst 
                    || blez_inst || bgez_inst || bgezal_inst || bltz_inst || bltzal_inst ) ? {16'b0, _inst[15:0]} :
                    (sll_inst || sra_inst  || srl_inst ) ? {27'b0, _inst[10:6]} :
@@ -103,13 +105,13 @@ module cu (
 					          lb_inst  || lui_inst || lw_inst   || or_inst  || ori_inst || sll_inst || sllv_inst|| 
 					          slt_inst || slti_inst|| sltiu_inst|| sltu_inst|| sra_inst || srl_inst || srlv_inst|| 
 					          sub_inst || subu_inst|| xor_inst  || nor_inst || xori_inst|| div_inst || divu_inst|| 
-					          mfhi_inst|| mflo_inst|| mult_inst || multu_inst ) ? 1'b1 : 1'b0;
+					          mfhi_inst|| mflo_inst|| mult_inst || multu_inst || lh_inst) ? 1'b1 : 1'b0;
 
   // Memory Write Enable
-  assign mem_we = (sb_inst || sw_inst) ? 1'b1 : 1'b0;
+  assign mem_we = (sb_inst || sw_inst || sh_inst) ? 1'b1 : 1'b0;
 
   // ALU operator
-  assign alu_op = (add_inst|| addi_inst|| addiu_inst|| addu_inst|| lb_inst|| lw_inst|| sb_inst|| sw_inst) ? `ALU_OP_PLUS :
+  assign alu_op = (add_inst|| addi_inst|| addiu_inst|| addu_inst|| lb_inst|| lw_inst|| sb_inst|| sw_inst || lh_inst || sh_inst) ? `ALU_OP_PLUS :
 			            (and_inst|| andi_inst) ? `ALU_OP_AND :
 			            (div_inst|| divu_inst) ? `ALU_OP_DIV :
 			            (mult_inst|| multu_inst) ? `ALU_OP_MULT :
@@ -132,13 +134,13 @@ module cu (
 					  sll_inst || sllv_inst || slt_inst|| sltu_inst|| sra_inst|| srl_inst|| 
 					  srlv_inst|| sub_inst  || subu_inst|| xor_inst || nor_inst) ? `WRITE_REG_DST_RD :
 					 // RT
-					 (addi_inst|| addiu_inst|| andi_inst|| lb_inst|| lui_inst|| lw_inst|| 
+					 (addi_inst|| addiu_inst|| andi_inst|| lb_inst|| lui_inst|| lw_inst|| lh_inst || 
 					  ori_inst || xori_inst || slti_inst || sltiu_inst) ? `WRITE_REG_DST_RT :
 					 // $31
 					 (bgezal_inst|| bltzal_inst|| jal_inst) ? `WRITE_REG_DST_31 :
 					 `WRITE_REG_DST_DEFAULT;
 
-  assign alu_src = (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| 
+  assign alu_src = (addi_inst|| addiu_inst|| slti_inst|| sltiu_inst|| lb_inst|| lh_inst || sh_inst ||
 				            lw_inst  || sb_inst   || sw_inst  ||andi_inst || ori_inst  || xori_inst) ? `ALU_SRC_EXTEND :
                     (sll_inst || srl_inst || sra_inst) ? `ALU_SRC_SHAMT :
 				            `ALU_SRC_DEFAULT;
@@ -148,7 +150,7 @@ module cu (
 				                       add_inst || addu_inst || sub_inst || subu_inst || slt_inst|| sltu_inst|| 
 				                       and_inst || or_inst   || nor_inst || xor_inst  || sll_inst|| srl_inst || 
 				                       sra_inst || sllv_inst || srlv_inst || slti_inst) ? `SRC_WRITE_REG_ALU:
-				                      (lw_inst | lb_inst) ? `SRC_WRITE_REG_MEM :
+				                      (lw_inst | lb_inst | lh_inst) ? `SRC_WRITE_REG_MEM :
 				                      (bgezal_inst || jal_inst || bltzal_inst) ? `SRC_WRITE_REG_JDST :
 				                      `SRC_WRITE_REG_DEFAULT ;
 

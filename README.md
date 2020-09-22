@@ -39,9 +39,5 @@
 | 37 xor    |   R  |     |
 | 38 nor    |   R  |     |
 | 39 xori   |   I  |     |
-| 40 div    |   R  |     |
-| 41 divu   |   R  |     |
-| 42 mfhi   |   R  |     |
-| 43 mflo   |   R  |     |
-| 44 mult   |   R  |     |
-| 45 multu  |   R  |     |
+| 40 lh     |   I  |     |
+| 41 sh     |   I  |     |

@@ -22,6 +22,8 @@
 `define SLTIU_OP 		6'b001011
 `define SW_OP 			6'b101011
 `define XORI_OP 		6'b001110
+`define LH_OP			6'b100001
+`define SH_OP			6'b101001
 
 // R Type 
 `define R_OP 			6'b000000
