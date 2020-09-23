@@ -48,8 +48,7 @@ module alu (
       `ALU_OP_MINUS:// -
         begin
         alu_reg <= _num1 - _num2;
-        if (alu_reg > _num1)
-		begin
+        if (alu_reg > _num1) begin
           overflow <= 1'b1;
         end else begin
           overflow <= 1'b0;  // no overflow
