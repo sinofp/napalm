@@ -19,14 +19,25 @@ module alu (
   always @(*) begin
     case (_alu_op)
       `ALU_OP_PLUS:// +
-		begin
-        alu_reg <= _num1 + _num2;
-        if ((alu_reg < _num1) || (alu_reg < _num2)) begin
-          overflow <= 1'b1;
-        end else begin
-          overflow <= 1'b0;  // no overflow
-        end
+        begin
+        alu_reg <= _num1 - _num2;
+		//overflow:(n1+ n2+ res-) || (n1- n2- res+)
+        case ({_num1[31], _num2[31], alu_reg[31]})
+          3'b001:
+				begin
+				overflow <= 1;
+				end
+          3'b110:
+				begin
+				overflow <= 1;
+				end
+          default:
+				begin
+				overflow <= 0;
+				end
+		endcase
       end
+
       `ALU_OP_AND://&
 			alu_reg <= _num1 & _num2;
 
@@ -48,11 +59,21 @@ module alu (
       `ALU_OP_MINUS:// -
         begin
         alu_reg <= _num1 - _num2;
-        if (alu_reg > _num1) begin
-          overflow <= 1'b1;
-        end else begin
-          overflow <= 1'b0;  // no overflow
-        end
+		//overflow:(n1+ n2- res-) || (n1- n2+ res+)
+        case ({_num1[31], _num2[31], alu_reg[31]})
+          3'b011:
+				begin
+				overflow <= 1;
+				end
+          3'b100:
+				begin
+				overflow <= 1;
+				end
+          default:
+				begin
+				overflow <= 0;
+				end
+		endcase
       end
       `ALU_OP_XOR:// xor
             alu_reg <= _num1 ^ _num2;
