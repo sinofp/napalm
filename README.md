@@ -14,9 +14,9 @@
 | 12 bltz   |   IBR|     |
 | 13 bltzal |   IBR|     |
 | 14 bne    |   I  |     |
-| 15 j      |   J  |   1  |
-| 16 jal    |   J  |   1  |
-| 17 jr     |   R  |   1  |
+| 15 j      |   J  |     |
+| 16 jal    |   J  |     |
+| 17 jr     |   R  |     |
 | 18 lb     |   I  |     |
 | 19 lui    |   I  |     |
 | 20 lw     |   I  |     |
@@ -39,9 +39,5 @@
 | 37 xor    |   R  |     |
 | 38 nor    |   R  |     |
 | 39 xori   |   I  |     |
-| 40 div    |   R  |     |
-| 41 divu   |   R  |     |
-| 42 mfhi   |   R  |     |
-| 43 mflo   |   R  |     |
-| 44 mult   |   R  |     |
-| 45 multu  |   R  |     |
+| 40 lh     |   I  |     |
+| 41 sh     |   I  |     |

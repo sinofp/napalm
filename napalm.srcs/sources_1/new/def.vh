@@ -22,6 +22,8 @@
 `define SLTIU_OP 		6'b001011
 `define SW_OP 			6'b101011
 `define XORI_OP 		6'b001110
+`define LH_OP			6'b100001
+`define SH_OP			6'b101001
 
 // R Type 
 `define R_OP 			6'b000000
@@ -117,6 +119,7 @@
 `define ALU_OP_XOR 				4'b1100 		// xor
 `define ALU_OP_NOR 				4'b1101 		// nor
 `define ALU_OP_SLLV 			4'b1110 		// shift left logical variable
+`define ALU_OP_SLTU             4'b1111
 
 // BR UNIT OP
 `define BR_OP_LEN  				4
