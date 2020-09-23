@@ -11,7 +11,7 @@ module alu (
 );
 
 
-  reg [32:0] alu_reg;
+  reg [31:0] alu_reg;
   assign alu_res = alu_reg[31:0];
 
   wire [4:0] _sa;
@@ -21,7 +21,7 @@ module alu (
       `ALU_OP_PLUS:// +
 		begin
         alu_reg <= _num1 + _num2;
-        if (alu_reg < 0) begin
+        if ((alu_reg < _num1) || (alu_reg < _num2)) begin
           overflow <= 1'b1;
         end else begin
           overflow <= 1'b0;  // no overflow
@@ -48,9 +48,7 @@ module alu (
       `ALU_OP_MINUS:// -
         begin
         alu_reg <= _num1 - _num2;
-        if ((_num1 >= 0) && (_num2 < 0) && (alu_reg < 0)) begin
-          overflow <= 1'b1;
-        end else if ((_num1 < 0) && (_num2 > 0) && (alu_reg >= 0)) begin
+        if (alu_reg > _num1) begin
           overflow <= 1'b1;
         end else begin
           overflow <= 1'b0;  // no overflow
