@@ -7,10 +7,12 @@ module data_mem (
     input  [31:0] _wd,  // write_data
     input         _we,  // write_enable
     input  [ 5:0] _opcode,
-    output [31:0] rd  // read_data
+    output [31:0] rd,  // read_data
+    output [7:0] light
 );
 
   reg [7:0] mem[255:0];
+  assign light = mem[0];
 
   assign rd = (_opcode == `LB_OP)? {{24{mem[_addr][7]}}, mem[_addr]}: // load 8 位，符号扩展到 32 位
               (_opcode == `LH_OP)? {{16{mem[_addr+1][7]}}, mem[_addr+1], mem[_addr]}:

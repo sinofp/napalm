@@ -2,8 +2,9 @@
 `include "def.vh"
 
 module cpu (
-    input clk,
-    input rst_n
+    input _clk,
+    input rst_n,
+    output [7:0] light
 );
   wire rst = ~rst_n;
 
@@ -12,6 +13,8 @@ module cpu (
   wire stall;
   wire [31:0] fd_pcp4;
   wire [31:0] fd_inst;
+
+  dcm DCM (._clk(_clk), .clk(clk));
 
   fetch FETCH (
       .clk(clk),
@@ -140,7 +143,8 @@ module cpu (
       .imm_ext(mw_imm_ext),
       .reg_wd_mux(mw_wd_mux),
       .reg_write_addr(mw_reg_wa),
-      .pcp8(mw_pcp8)
+      .pcp8(mw_pcp8),
+      .light(light)
   );
 
   writeback WRITEBACK (
