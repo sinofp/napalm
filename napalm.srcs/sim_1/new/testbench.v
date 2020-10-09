@@ -14,7 +14,7 @@ module testbench;
   initial begin
     $readmemh("../../../../test/reg.txt", CPU.DECODE.REG_FILE.gpr);
     $readmemb("../../../../test/data.txt", CPU.MEMORY.DATA_MEM.mem);
-    $readmemh("../../../../test/branch.txt", CPU.FETCH.INST_MEM.mem);
+    $readmemh("../../../../test/alu.txt", CPU.FETCH.INST_MEM.mem);
   end
 
   initial begin
